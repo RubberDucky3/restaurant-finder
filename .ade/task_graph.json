@@ -2,7 +2,7 @@
   "project": "Restaurant Finder",
   "goal": "run the project",
   "plan_id": "1509d9c0-4427-4711-8d7a-ed203571a28f",
-  "status": "ready",
+  "status": "done",
   "loop_count": 4,
   "tasks": [
     {
@@ -788,11 +788,15 @@
       "seq": 45,
       "kind": "deploy",
       "title": "Deploy the updated project",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         44
       ],
-      "result": null,
+      "result": {
+        "deployed": true,
+        "repo_url": "https://github.com/RubberDucky3/restaurant-finder",
+        "pages_url": "https://RubberDucky3.github.io/restaurant-finder/"
+      },
       "error": null
     }
   ]

@@ -290,18 +290,25 @@
       "seq": 16,
       "kind": "code",
       "title": "Refactor backend package.json for dependencies",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         10
       ],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/backend/package.json b/backend/package.json\n--- a/backend/package.json\n+++ b/backend/package.json\n@@ -10,6 +10,14 @@\n   \"dependencies\": {\n     \"express\": \"^4.17.1\",\n     \"mongoose\": \"^5.12.3\"\n+    \"dotenv\": \"^10.0.0\",  // For environment variables\n+    \"google-maps-api\": \"^1.0.0\",  // For Google Maps integration\n+    \"moment-timezone\": \"^0.5.33\",  // For handling time zones in dark mode\n+    \"express-session\": \"^1.17.2\",  // For session management\n+    \"connect-mongo\": \"^4.6.0\",  // For MongoDB session store\n+    \"bcryptjs\": \"^2.4.3\",  // For password hashing\n+    \"jsonwebtoken\": \"^8.5.1\"  // For JSON Web Tokens\n   },\n   \"devDependencies\": {\n     \"nodemon\": \"^2.0.7\"",
+        "files_changed": [
+          "backend/package.json"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 17,
       "kind": "code",
       "title": "Refactor frontend package.json for dependencies",
-      "status": "queued",
+      "status": "running",
       "depends_on": [
         10
       ],

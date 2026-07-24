@@ -1,13 +1,18 @@
-{
-  "name": "restaurant-finder-frontend",
-  "version": "1.0.0",
-  "description": "Frontend for the Restaurant Finder project",
-  "main": "index.js",
-  "scripts": {
-    "start": "react-scripts start"
-  },
-  "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
-  }
+   "dependencies": {
+     "react": "^17.0.2",
+     "react-dom": "^17.0.2",
+    "@react-google-maps/api": "^2.9.0", // Google Maps integration
+    "styled-components": "^5.3.3" // For dark mode styling
+   },
+   "devDependencies": {
+     "@babel/core": "^7.14.6",
+@@ -28,6 +36,10 @@
+     "react-scripts": "4.0.3"
+   }
+ }
+
+// Add scripts for building and running in dark mode
+"scripts": {
+  "start:dark": "REACT_APP_THEME=dark react-scripts start",
+  "build:dark": "REACT_APP_THEME=dark react-scripts build"
 }

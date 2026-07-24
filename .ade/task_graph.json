@@ -3,7 +3,7 @@
   "goal": "run the project",
   "plan_id": "1509d9c0-4427-4711-8d7a-ed203571a28f",
   "status": "ready",
-  "loop_count": 2,
+  "loop_count": 3,
   "tasks": [
     {
       "seq": 0,
@@ -489,31 +489,137 @@
       "seq": 27,
       "kind": "commit",
       "title": "Commit changes for frontend package.json",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         25
       ],
-      "result": null,
+      "result": {
+        "commit_sha": "def529f4ed71",
+        "branch": "main",
+        "message": "Commit changes for frontend package.json\n\nCommit the updated `frontend/package.json` file with a descriptive commit message indicating the necessary dependencies and scripts added."
+      },
       "error": null
     },
     {
       "seq": 28,
       "kind": "deploy",
       "title": "Deploy the backend to production",
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         26
       ],
-      "result": null,
+      "result": {
+        "deployed": true,
+        "repo_url": "https://github.com/RubberDucky3/restaurant-finder",
+        "pages_url": "https://RubberDucky3.github.io/restaurant-finder/"
+      },
       "error": null
     },
     {
       "seq": 29,
       "kind": "deploy",
       "title": "Deploy the frontend to production",
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         27
+      ],
+      "result": {
+        "deployed": true,
+        "repo_url": "https://github.com/RubberDucky3/restaurant-finder",
+        "pages_url": "https://RubberDucky3.github.io/restaurant-finder/"
+      },
+      "error": null
+    },
+    {
+      "seq": 30,
+      "kind": "retrieve",
+      "title": "Retrieve the current state of the project",
+      "status": "done",
+      "depends_on": [],
+      "result": {
+        "queries": [
+          "git pull",
+          "repository files"
+        ],
+        "excerpts": [],
+        "count": 0
+      },
+      "error": null
+    },
+    {
+      "seq": 31,
+      "kind": "code",
+      "title": "Generate a functional package.json file for the backend",
+      "status": "running",
+      "depends_on": [
+        30
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 32,
+      "kind": "test",
+      "title": "Test the backend package.json file",
+      "status": "pending",
+      "depends_on": [
+        31
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 33,
+      "kind": "code",
+      "title": "Generate a functional package.json file for the frontend",
+      "status": "queued",
+      "depends_on": [
+        30
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 34,
+      "kind": "test",
+      "title": "Test the frontend package.json file",
+      "status": "pending",
+      "depends_on": [
+        33
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 35,
+      "kind": "review",
+      "title": "Review the generated package.json files",
+      "status": "pending",
+      "depends_on": [
+        32,
+        34
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 36,
+      "kind": "commit",
+      "title": "Commit the changes to the repository",
+      "status": "pending",
+      "depends_on": [
+        35
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 37,
+      "kind": "deploy",
+      "title": "Deploy the project to a development environment",
+      "status": "pending",
+      "depends_on": [
+        36
       ],
       "result": null,
       "error": null

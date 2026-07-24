@@ -1,45 +1,22 @@
-import React, { useState } from 'react';
+ import React, { useState } from 'react';
+ import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 
-const RegistrationForm = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: ''
-  });
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Perform validation
-    let errors = {};
-    if (!formData.username) errors.username = 'Username is required';
-    if (!formData.email) errors.email = 'Email is required';
-    if (!formData.password) errors.password = 'Password is required';
-
-    setErrors(errors);
-    if (Object.keys(errors).length > 0) return;
-
-    // Submit form data to backend
-    try {
-      const response = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-      if (response.ok) {
-        alert('Registration successful!');
+ const RegistrationForm = () => {
+   const [email, setEmail] = useState('');
+@@ -20,6 +21,14 @@ const RegistrationForm = () => {
+     .then(response => {
+       console.log('User registered successfully:', response.data);
+      // Handle successful registration
+      localStorage.setItem('token', response.data.token);
+      const decodedToken = jwtDecode(response.data.token);
+      if (decodedToken.exp < Date.now() / 1000) {
+        alert('Session expired. Please log in again.');
+        localStorage.removeItem('token');
       } else {
-        alert('Registration failed. Please try again.');
+        // Redirect to protected route
+        window.location.href = '/protected';
       }
-    } catch (error) {
-      console.error('Error registering:', error);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
+     })
+     .catch(error => {
+       console.error('Error registering user:', error);

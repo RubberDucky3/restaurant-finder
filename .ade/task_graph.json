@@ -179,11 +179,18 @@
       "seq": 9,
       "kind": "code",
       "title": "Develop backend API routes",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         8
       ],
-      "result": null,
+      "result": {
+        "patch": "--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -0,0 +1,45 @@\n+const Restaurant = require('../models/restaurant');\n+\n+exports.createRestaurant = async (req, res) => {\n+  try {\n+    const restaurant = new Restaurant(req.body);\n+    await restaurant.save();\n+    res.status(201).json(restaurant);\n+  } catch (error) {\n+    res.status(400).json({ error: error.message });\n+  }\n+};\n+\n+exports.getRestaurants = async (req, res) => {\n+  try {\n+    const restaurants = await Restaurant.find();\n+    res.json(restaurants);\n+  } catch (error) {\n+    res.status(500).json({ error: error.message });\n+  }\n+};\n+\n+exports.getRestaurantById = async (req, res) => {\n+  try {\n+    const restaurant = await Restaurant.findById(req.params.id);\n+    if (!restaurant) {\n+      return res.status(404).json({ message: 'Restaurant not found' });\n+    }\n+    res.json(restaurant);\n+  } catch (error) {\n+    res.status(500).json({ error: error.message });\n+  }\n+};\n+\n+exports.updateRestaurant = async (req, res) => {\n+  try {\n+    const restaurant = await Restaurant.findByIdAndUpdate(req.params.id, req.body, { new: true });\n+    if (!restaurant) {\n+      return res.status(404).json({ message: 'Restaurant not found' });\n+    }\n+    res.json(restaurant);\n+  } catch (error) {\n+    res.status(500).json({ error: error.message });\n+  }\n+};\n+\n+exports.deleteRestaurant = async (req, res) => {\n+  try {\n+    const restaurant = await Restaurant.findByIdAndDelete(req.params.id);\n+    if (!restaurant) {\n+      return res.status(404).json({ message: 'Restaurant not found' });\n+    }\n+    res.json({ message: 'Restaurant deleted' });\n+  } catch (error) {\n+    res.status(500).json({ error: error.message });\n+  }\n+};",
+        "files_changed": [
+          "backend/controllers/restaurantController.js"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
@@ -208,51 +215,80 @@
       "seq": 11,
       "kind": "test",
       "title": "Write developer test suite for backend",
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         9
       ],
-      "result": null,
+      "result": {
+        "passed": false,
+        "command": "python3 -m unittest",
+        "output": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nNO TESTS RAN",
+        "exit_code": 5
+      },
       "error": null
     },
     {
       "seq": 12,
       "kind": "test",
       "title": "Write developer test suite for frontend",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         10
       ],
-      "result": null,
+      "result": {
+        "passed": false,
+        "command": "python3 -m unittest",
+        "output": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nNO TESTS RAN",
+        "exit_code": 5
+      },
       "error": null
     },
     {
       "seq": 13,
       "kind": "review",
       "title": "Review backend code",
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         11
       ],
-      "result": null,
+      "result": {
+        "approved": false,
+        "summary": "The code patch is missing crucial backend setup and security measures.",
+        "comments": [
+          "1. The `package.json` files for both frontend and backend are incomplete or incorrect. They lack necessary dependencies and scripts.",
+          "2. The `.env` file contains sensitive information without proper encryption or secure storage.",
+          "3. There is no authentication mechanism in place, which exposes the backend to unauthorized access.",
+          "4. The `restaurantController.js` lacks validation for incoming data, which can lead to security vulnerabilities.",
+          "5. The frontend registration form does not include any validation or error handling."
+        ]
+      },
       "error": null
     },
     {
       "seq": 14,
       "kind": "review",
       "title": "Review frontend code",
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         12
       ],
-      "result": null,
+      "result": {
+        "approved": false,
+        "summary": "The code patch is missing crucial backend setup and security measures.",
+        "comments": [
+          "1. The `backend/package.json` file should include the correct dependencies for a Node.js project, such as Express and MongoDB/Mongoose.",
+          "2. The `.env` file should not be committed to version control. It should be added to `.gitignore`.",
+          "3. The backend API routes are missing authentication and authorization checks, which could lead to security vulnerabilities.",
+          "4. The frontend code is incomplete and lacks proper error handling and validation."
+        ]
+      },
       "error": null
     },
     {
       "seq": 15,
       "kind": "commit",
       "title": "Commit backend changes",
-      "status": "pending",
+      "status": "running",
       "depends_on": [
         13
       ],
@@ -263,7 +299,7 @@
       "seq": 16,
       "kind": "commit",
       "title": "Commit frontend changes",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         14
       ],

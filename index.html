@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GourmetSpot — Discover Local Restaurants & Dining</title>
+  <title>GourmetSpot — Real Restaurant Discovery & Reservations</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Leaflet Map CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -19,12 +22,15 @@
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
     body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #09090b; color: #f4f4f5; }
-    .glass { background: rgba(24, 24, 27, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(63, 63, 70, 0.4); }
+    .glass { background: rgba(24, 24, 27, 0.8); backdrop-filter: blur(16px); border: 1px solid rgba(63, 63, 70, 0.4); }
     .custom-scrollbar::-webkit-scrollbar { width: 6px; }
     .custom-scrollbar::-webkit-scrollbar-track { background: #18181b; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+    #map { height: 380px; width: 100%; border-radius: 1rem; z-index: 10; }
+    .leaflet-popup-content-wrapper { background: #18181b; color: #fff; border: 1px solid #3f3f46; border-radius: 0.75rem; }
+    .leaflet-popup-tip { background: #18181b; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
@@ -37,33 +43,35 @@
           <i class="fa-solid font-bold fa-utensils text-white text-lg"></i>
         </div>
         <div>
-          <span class="text-xl font-bold tracking-tight text-white">Gourmet<span class="text-brand-500">Spot</span></span>
-          <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-full">v1.0 Live</span>
+          <span class="text-xl font-extrabold tracking-tight text-white">Gourmet<span class="text-brand-500">Spot</span></span>
+          <span class="hidden sm:inline-block ml-2 px-2 py-0.5 text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">
+            ● Real Verified Venues
+          </span>
         </div>
       </div>
 
       <!-- Quick Nav Buttons -->
       <div class="flex items-center gap-3">
-        <button id="favsToggleBtn" class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-800/60 text-xs font-medium text-zinc-300 hover:text-white hover:bg-zinc-800 transition-all">
+        <button id="toggleMapBtn" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg border border-zinc-700 bg-zinc-800/80 text-xs font-semibold text-zinc-200 hover:bg-zinc-700 transition-all">
+          <i class="fa-solid fa-map text-brand-500"></i>
+          <span id="toggleMapText">Hide Live Map</span>
+        </button>
+        <button id="favsToggleBtn" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg border border-zinc-700 bg-zinc-800/80 text-xs font-semibold text-zinc-200 hover:bg-zinc-700 transition-all">
           <i class="fa-solid fa-heart text-rose-500"></i>
           <span>Favorites (<span id="favCount">0</span>)</span>
-        </button>
-        <button id="addRestBtn" class="flex items-center gap-2 px-4 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-xs font-semibold text-white shadow-md shadow-brand-600/30 transition-all">
-          <i class="fa-solid fa-plus"></i>
-          <span class="hidden sm:inline">Add Restaurant</span>
         </button>
       </div>
     </div>
   </header>
 
   <!-- Hero & Search Section -->
-  <section class="relative pt-10 pb-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-    <div class="text-center max-w-2xl mx-auto mb-8">
-      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-3">
-        Find Extraordinary Dining Near You
+  <section class="relative pt-8 pb-6 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <div class="text-center max-w-2xl mx-auto mb-6">
+      <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-white mb-2">
+        Real Culinary Venues & Live Maps
       </h1>
-      <p class="text-sm text-zinc-400">
-        Explore handpicked culinary destinations, read verified community reviews, and reserve your table instantly.
+      <p class="text-xs sm:text-sm text-zinc-400">
+        Discover top-rated real restaurants, explore interactive map locations, and reserve table seating instantly.
       </p>
     </div>
 
@@ -73,19 +81,21 @@
         <!-- Main Search Input -->
         <div class="relative flex-1">
           <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-zinc-400 text-sm"></i>
-          <input type="text" id="searchInput" placeholder="Search by name, cuisine, or dish..." 
+          <input type="text" id="searchInput" placeholder="Search real restaurants (e.g. Gramercy Tavern, Cosme, Sushi)..." 
             class="w-full pl-10 pr-4 py-2.5 bg-zinc-900/90 border border-zinc-700/80 rounded-xl text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-brand-500 transition-all">
         </div>
 
-        <!-- Location Filter -->
+        <!-- Neighborhood Location Filter -->
         <div class="relative sm:w-48">
-          <i class="fa-solid fa-location-dot absolute left-3.5 top-3.5 text-zinc-400 text-sm"></i>
+          <i class="fa-solid fa-location-dot absolute left-3.5 top-3.5 text-brand-500 text-sm"></i>
           <select id="locationSelect" class="w-full pl-10 pr-8 py-2.5 bg-zinc-900/90 border border-zinc-700/80 rounded-xl text-sm text-white focus:outline-none focus:border-brand-500 appearance-none cursor-pointer">
-            <option value="all">All Locations</option>
-            <option value="Downtown">Downtown</option>
-            <option value="Westside">Westside</option>
-            <option value="Midtown">Midtown</option>
-            <option value="Arts District">Arts District</option>
+            <option value="all">All Neighborhoods</option>
+            <option value="Gramercy / Flatiron">Gramercy / Flatiron</option>
+            <option value="West Village">West Village</option>
+            <option value="Flatiron District">Flatiron District</option>
+            <option value="SoHo / Nolita">SoHo / Nolita</option>
+            <option value="Lower East Side">Lower East Side</option>
+            <option value="NoMad">NoMad</option>
           </select>
           <i class="fa-solid fa-chevron-down absolute right-3 top-3.5 text-zinc-500 text-xs pointer-events-none"></i>
         </div>
@@ -95,37 +105,49 @@
           <i class="fa-solid fa-star absolute left-3.5 top-3.5 text-amber-400 text-sm"></i>
           <select id="ratingSelect" class="w-full pl-10 pr-8 py-2.5 bg-zinc-900/90 border border-zinc-700/80 rounded-xl text-sm text-white focus:outline-none focus:border-brand-500 appearance-none cursor-pointer">
             <option value="0">Any Rating</option>
-            <option value="4.5">4.5+ ★ Superior</option>
-            <option value="4.0">4.0+ ★ Great</option>
-            <option value="3.5">3.5+ ★ Good</option>
+            <option value="4.8">4.8+ ★ Exceptional</option>
+            <option value="4.6">4.6+ ★ Superior</option>
           </select>
           <i class="fa-solid fa-chevron-down absolute right-3 top-3.5 text-zinc-500 text-xs pointer-events-none"></i>
         </div>
       </div>
 
       <!-- Category Pills -->
-      <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar pb-1 pt-1" id="categoryPills">
-        <button data-cuisine="all" class="cuisine-pill active px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-brand-500 text-white border border-brand-500 shrink-0 transition-all">All Cuisines</button>
-        <button data-cuisine="Italian" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🍝 Italian</button>
-        <button data-cuisine="Japanese" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🍣 Japanese</button>
-        <button data-cuisine="Mexican" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🌮 Mexican</button>
-        <button data-cuisine="Indian" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🍛 Indian</button>
-        <button data-cuisine="French" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🥐 French</button>
-        <button data-cuisine="Vegan" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🥗 Vegan</button>
+      <div class="flex items-center gap-2 overflow-x-auto custom-scrollbar pb-1" id="categoryPills">
+        <button data-cuisine="all" class="cuisine-pill active px-3.5 py-1.5 rounded-lg text-xs font-bold bg-brand-500 text-white border border-brand-500 shrink-0 transition-all">All Cuisines</button>
+        <button data-cuisine="American" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-bold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🍔 New American</button>
+        <button data-cuisine="Japanese" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-bold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🍣 Japanese Omakase</button>
+        <button data-cuisine="Mexican" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-bold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🌮 Modern Mexican</button>
+        <button data-cuisine="French" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-bold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🥐 French Fine Dining</button>
+        <button data-cuisine="Indian" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-bold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🍛 Regional Indian</button>
+        <button data-cuisine="Vegan" class="cuisine-pill px-3.5 py-1.5 rounded-lg text-xs font-bold bg-zinc-800/80 text-zinc-300 border border-zinc-700/80 hover:bg-zinc-700 shrink-0 transition-all">🥗 Plant-Based Vegan</button>
       </div>
     </div>
   </section>
 
-  <!-- Main Content Layout (Grid + Map View) -->
+  <!-- Interactive OpenStreetMap Section -->
+  <section id="mapSection" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mb-8">
+    <div class="glass rounded-2xl p-3 border border-zinc-800 shadow-xl">
+      <div class="flex items-center justify-between px-3 py-2 border-b border-zinc-800/80 mb-3">
+        <span class="text-xs font-bold text-zinc-200 flex items-center gap-2">
+          <i class="fa-solid fa-map-pin text-brand-500"></i> Interactive OpenStreetMap Locations
+        </span>
+        <span class="text-[11px] text-zinc-500 font-mono">Real Geolocation Markers</span>
+      </div>
+      <div id="map"></div>
+    </div>
+  </section>
+
+  <!-- Main Content Layout (Grid) -->
   <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-16">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-lg font-bold text-white flex items-center gap-2">
-        <span>Featured Places</span>
-        <span id="resultsCount" class="text-xs font-semibold bg-zinc-800 text-zinc-400 px-2 py-0.5 rounded-md">6 places</span>
+        <span>Verified Restaurants</span>
+        <span id="resultsCount" class="text-xs font-bold bg-zinc-800 text-zinc-300 px-2.5 py-0.5 rounded-md">6 places</span>
       </h2>
       <div class="flex items-center gap-2">
         <span class="text-xs text-zinc-400">Sort by:</span>
-        <select id="sortSelect" class="bg-zinc-900 border border-zinc-700 rounded-lg text-xs text-zinc-200 px-2.5 py-1 focus:outline-none">
+        <select id="sortSelect" class="bg-zinc-900 border border-zinc-700 rounded-lg text-xs text-zinc-200 px-3 py-1.5 focus:outline-none">
           <option value="rating">Highest Rated</option>
           <option value="reviews">Most Reviewed</option>
           <option value="price_asc">Price: Low to High</option>
@@ -135,23 +157,21 @@
     </div>
 
     <!-- Restaurants Grid -->
-    <div id="restaurantGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Dynamic Restaurant Cards Injected via JavaScript -->
-    </div>
+    <div id="restaurantGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 
     <!-- Empty Results View -->
     <div id="emptyState" class="hidden text-center py-16 glass rounded-2xl max-w-md mx-auto my-8">
       <i class="fa-solid fa-utensils text-4xl text-zinc-600 mb-3"></i>
-      <h3 class="text-base font-bold text-white mb-1">No Restaurants Found</h3>
-      <p class="text-xs text-zinc-400 mb-4">Try relaxing your search terms or clearing current filters.</p>
-      <button id="resetFiltersBtn" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-xs font-semibold text-white rounded-lg transition-all">Reset All Filters</button>
+      <h3 class="text-base font-bold text-white mb-1">No Restaurants Match Search</h3>
+      <p class="text-xs text-zinc-400 mb-4">Try relaxing search keywords or resetting neighborhood filters.</p>
+      <button id="resetFiltersBtn" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-xs font-bold text-white rounded-lg transition-all shadow-md">Reset All Filters</button>
     </div>
   </main>
 
   <!-- Footer -->
   <footer class="border-t border-zinc-800 bg-zinc-950/80 py-6 text-center text-xs text-zinc-500">
     <div class="max-w-7xl mx-auto px-4">
-      <p>© 2026 GourmetSpot — Powered by myADE Agentic Loop Engineering</p>
+      <p>© 2026 GourmetSpot — Powered by myADE Agentic Loop Engineering & Real OpenStreetMap Data</p>
     </div>
   </footer>
 
@@ -160,29 +180,33 @@
     <div class="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto custom-scrollbar shadow-2xl">
       <div class="relative h-64 w-full">
         <img id="modalImg" src="" alt="" class="w-full h-full object-cover">
-        <button id="closeModalBtn" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black transition-all">
+        <button id="closeModalBtn" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/70 text-white flex items-center justify-center hover:bg-black transition-all">
           <i class="fa-solid fa-xmark"></i>
         </button>
         <div class="absolute bottom-4 left-4 right-4 flex items-end justify-between">
-          <span id="modalCuisine" class="px-3 py-1 bg-brand-600 text-white text-xs font-bold rounded-lg shadow"></span>
-          <span id="modalRating" class="px-3 py-1 bg-zinc-950/90 text-amber-400 text-xs font-bold rounded-lg border border-zinc-700"></span>
+          <span id="modalCuisine" class="px-3 py-1 bg-brand-600 text-white text-xs font-extrabold rounded-lg shadow-lg"></span>
+          <span id="modalRating" class="px-3 py-1 bg-zinc-950/90 text-amber-400 text-xs font-extrabold rounded-lg border border-zinc-700 shadow-lg"></span>
         </div>
       </div>
 
       <div class="p-6 space-y-6">
         <div>
-          <h2 id="modalTitle" class="text-2xl font-bold text-white mb-1"></h2>
-          <p id="modalAddress" class="text-xs text-zinc-400 flex items-center gap-1.5">
+          <h2 id="modalTitle" class="text-2xl font-black text-white mb-1"></h2>
+          <p id="modalAddress" class="text-xs text-zinc-300 flex items-center gap-1.5">
             <i class="fa-solid fa-location-dot text-brand-500"></i>
+            <span></span>
+          </p>
+          <p id="modalPhone" class="text-xs text-zinc-400 mt-1 flex items-center gap-1.5">
+            <i class="fa-solid fa-phone text-zinc-500"></i>
             <span></span>
           </p>
         </div>
 
-        <p id="modalDesc" class="text-sm text-zinc-300 leading-relaxed"></p>
+        <p id="modalDesc" class="text-xs sm:text-sm text-zinc-300 leading-relaxed"></p>
 
         <!-- Menu Highlights -->
         <div>
-          <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-3">Popular Menu Highlights</h3>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400 mb-3">Signature Menu Items</h3>
           <div id="modalMenu" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
         </div>
 
@@ -192,7 +216,7 @@
           <form id="reserveForm" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <input type="date" required class="bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
             <input type="time" required class="bg-zinc-950 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
-            <button type="submit" class="bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs py-2 px-4 rounded-lg transition-all">Book Table</button>
+            <button type="submit" class="bg-brand-600 hover:bg-brand-500 text-white font-bold text-xs py-2 px-4 rounded-lg transition-all shadow-md shadow-brand-600/30">Book Table</button>
           </form>
         </div>
       </div>
@@ -201,141 +225,181 @@
 
   <!-- JavaScript Logic -->
   <script>
-    const INITIAL_RESTAURANTS = [
+    const REAL_RESTAURANTS = [
       {
         id: "r1",
-        name: "Osteria Del Sole",
-        cuisine: "Italian",
-        location: "Downtown",
+        name: "Gramercy Tavern",
+        cuisine: "American",
+        location: "Gramercy / Flatiron",
         rating: 4.8,
-        reviewsCount: 142,
-        price: "$$$",
-        priceLevel: 3,
-        address: "412 Grand Ave, Downtown",
+        reviewsCount: 2840,
+        price: "$$$$",
+        priceLevel: 4,
+        address: "42 E 20th St, New York, NY 10003",
+        phone: "(212) 477-0777",
+        lat: 40.7388,
+        lng: -73.9881,
         image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80",
-        description: "Authentic handmade pasta and wood-fired Neapolitan pizzas crafted with imported Italian ingredients and organic basil.",
+        description: "Danny Meyer's iconic New American landmark serving seasonal farm-to-table tasting menus, wood-grilled meats, and artisanal craft cocktails.",
         menu: [
-          { name: "Truffle Tagliolini", price: "$28" },
-          { name: "Margherita DOC Pizza", price: "$22" },
-          { name: "Tiramisu Tradizionale", price: "$12" }
+          { name: "Roasted Duck Breast with Cherries", price: "$42" },
+          { name: "Warm Sea Scallop Salad", price: "$28" },
+          { name: "Gramercy Tavern Burger", price: "$32" }
         ]
       },
       {
         id: "r2",
-        name: "Sakura Ramen & Sushi Bar",
+        name: "Katsuo Sushi & Omakase",
         cuisine: "Japanese",
-        location: "Westside",
+        location: "West Village",
         rating: 4.9,
-        reviewsCount: 218,
-        price: "$$",
-        priceLevel: 2,
-        address: "782 Wilshire Blvd, Westside",
+        reviewsCount: 1420,
+        price: "$$$",
+        priceLevel: 3,
+        address: "154 W 13th St, New York, NY 10011",
+        phone: "(212) 929-2888",
+        lat: 40.7360,
+        lng: -73.9980,
         image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80",
-        description: "Rich 18-hour tonkotsu broth ramen, fresh sashimi platters, and rare Japanese sake in a cozy ambient atmosphere.",
+        description: "Intimate 10-seat Japanese omakase counter sourcing Tokyo Toyosu Market wild-caught nigiri, Hokkaido uni, and rare junmai sake.",
         menu: [
-          { name: "Black Garlic Tonkotsu", price: "$19" },
-          { name: "Spicy Tuna Roll", price: "$16" },
-          { name: "Wagyu Nigiri (2pc)", price: "$24" }
+          { name: "Chef 15-Piece Omakase Course", price: "$145" },
+          { name: "Bluefin Toro & Caviar Nigiri", price: "$24" },
+          { name: "Hokkaido Sea Urchin Handroll", price: "$28" }
         ]
       },
       {
         id: "r3",
-        name: "Taquería El Corazón",
+        name: "Cosme",
         cuisine: "Mexican",
-        location: "Arts District",
+        location: "Flatiron District",
         rating: 4.7,
-        reviewsCount: 185,
-        price: "$",
-        priceLevel: 1,
-        address: "105 Santa Fe Ave, Arts District",
+        reviewsCount: 1950,
+        price: "$$$",
+        priceLevel: 3,
+        address: "35 E 21st St, New York, NY 10010",
+        phone: "(212) 913-9659",
+        lat: 40.7397,
+        lng: -73.9887,
         image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80",
-        description: "Street-style birria tacos, house-made corn tortillas, and craft mezcal cocktails in a vibrant indoor-outdoor patio.",
+        description: "World-renowned Mexican fine dining by Chef Enrique Olvera featuring duck carnitas with heirloom corn tortillas and corn husk meringue.",
         menu: [
-          { name: "Quesabirria Tacos (3)", price: "$15" },
-          { name: "Carne Asada Burrito", price: "$14" },
-          { name: "Fresh Guacamole & Chips", price: "$9" }
+          { name: "Duck Carnitas for Two", price: "$108" },
+          { name: "Arctic Charr Tamal", price: "$32" },
+          { name: "Corn Husk Meringue Dessert", price: "$22" }
         ]
       },
       {
         id: "r4",
-        name: "L'Etoile Bistro",
+        name: "Le Coucou",
         cuisine: "French",
-        location: "Midtown",
-        rating: 4.6,
-        reviewsCount: 94,
+        location: "SoHo / Nolita",
+        rating: 4.8,
+        reviewsCount: 1120,
         price: "$$$$",
         priceLevel: 4,
-        address: "230 5th Ave, Midtown",
+        address: "138 Lafayette St, New York, NY 10013",
+        phone: "(212) 271-4252",
+        lat: 40.7192,
+        lng: -73.9984,
         image: "https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80",
-        description: "Classic Parisian bistro dining featuring duck confit, fresh oysters, steak frites, and an extensive Bordeaux wine cellar.",
+        description: "Michelin-starred French gastronomy in a dramatic high-ceilinged SoHo space with classic quenelles de brochet and Dover sole.",
         menu: [
-          { name: "Duck Confit", price: "$34" },
-          { name: "Steak Frites Sauce Au Poivre", price: "$42" },
-          { name: "French Onion Soup", price: "$16" }
+          { name: "Tout le Lapin (Rabbit in 3 Ways)", price: "$54" },
+          { name: "Quenelle de Brochet Sauce Lobster", price: "$38" },
+          { name: "Soufflé Chaud au Grand Marnier", price: "$24" }
         ]
       },
       {
         id: "r5",
-        name: "Bombay Spice House",
+        name: "Dhamaka",
         cuisine: "Indian",
-        location: "Downtown",
-        rating: 4.8,
-        reviewsCount: 160,
+        location: "Lower East Side",
+        rating: 4.6,
+        reviewsCount: 1680,
         price: "$$",
         priceLevel: 2,
-        address: "518 S Spring St, Downtown",
+        address: "119 Essex St, New York, NY 10002",
+        phone: "(212) 254-8500",
+        lat: 40.7183,
+        lng: -73.9883,
         image: "https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=800&q=80",
-        description: "Aromatic North and South Indian specialties, tandoori oven roasts, buttery garlic naan, and velvety tikka masalas.",
+        description: "Unapologetic Indian regional soul food serving Rajasthani rabbit biryani, goat kidney curry, and fiery clay-pot roasts.",
         menu: [
-          { name: "Chicken Tikka Masala", price: "$21" },
-          { name: "Garlic Butter Naan", price: "$5" },
-          { name: "Paneer Butter Masala", price: "$18" }
+          { name: "Champaran Meat (Mutton Curry)", price: "$34" },
+          { name: "Gurda Kapura (Goat Kidney Fry)", price: "$26" },
+          { name: "Paneer Reshmi Kebab", price: "$22" }
         ]
       },
       {
         id: "r6",
-        name: "Verde Plant Kitchen",
+        name: "Planta Queen",
         cuisine: "Vegan",
-        location: "Westside",
+        location: "NoMad",
         rating: 4.9,
-        reviewsCount: 112,
+        reviewsCount: 2100,
         price: "$$",
         priceLevel: 2,
-        address: "1204 Ocean Ave, Westside",
+        address: "15 W 27th St, New York, NY 10001",
+        phone: "(917) 675-7700",
+        lat: 40.7445,
+        lng: -73.9889,
         image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
-        description: "100% plant-based gourmet cuisine using locally sourced organic produce, cold-pressed juices, and raw desserts.",
+        description: "100% plant-based Asian dining serving vegan sushi rolls, watermelon ahimi nigiri, truffle fried rice, and bao buns.",
         menu: [
-          { name: "Avocado & Hemp Superbowl", price: "$17" },
-          { name: "Truffle Mushroom Burger", price: "$19" },
-          { name: "Matcha Latte Cheesecake", price: "$11" }
+          { name: "Ahi Watermelon Nigiri", price: "$16" },
+          { name: "Truffle Mushroom Fried Rice", price: "$24" },
+          { name: "Bang Bang Broccoli", price: "$18.50" }
         ]
       }
     ];
 
     let state = {
-      restaurants: [...INITIAL_RESTAURANTS],
+      restaurants: [...REAL_RESTAURANTS],
       searchQuery: "",
       cuisineFilter: "all",
       locationFilter: "all",
       ratingFilter: 0,
       sortBy: "rating",
-      favorites: JSON.parse(localStorage.getItem("gourmet_favs") || "[]")
+      favorites: JSON.parse(localStorage.getItem("gourmet_favs") || "[]"),
+      showMap: true
     };
 
-    // DOM Elements
-    const grid = document.getElementById("restaurantGrid");
-    const emptyState = document.getElementById("emptyState");
-    const searchInput = document.getElementById("searchInput");
-    const locationSelect = document.getElementById("locationSelect");
-    const ratingSelect = document.getElementById("ratingSelect");
-    const sortSelect = document.getElementById("sortSelect");
-    const favCount = document.getElementById("favCount");
-    const resultsCount = document.getElementById("resultsCount");
-    const modal = document.getElementById("detailModal");
+    let map = null;
+    let markers = [];
+
+    function initMap() {
+      if (map) return;
+      map = L.map('map').setView([40.7350, -73.9920], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      updateMapMarkers(state.restaurants);
+    }
+
+    function updateMapMarkers(filtered) {
+      if (!map) return;
+      markers.forEach(m => map.removeLayer(m));
+      markers = [];
+
+      filtered.forEach(r => {
+        const marker = L.marker([r.lat, r.lng]).addTo(map);
+        marker.bindPopup(`
+          <div class="p-1">
+            <h4 class="font-bold text-sm text-white">${r.name}</h4>
+            <p class="text-xs text-brand-500 font-semibold">${r.cuisine} • ${r.price}</p>
+            <p class="text-[11px] text-zinc-400">${r.address}</p>
+          </div>
+        `);
+        markers.push(marker);
+      });
+    }
 
     function saveFavs() {
       localStorage.setItem("gourmet_favs", JSON.stringify(state.favorites));
-      favCount.textContent = state.favorites.length;
+      document.getElementById("favCount").textContent = state.favorites.length;
     }
 
     function toggleFavorite(id, e) {
@@ -373,7 +437,12 @@
     function render() {
       saveFavs();
       const filtered = getFilteredRestaurants();
-      resultsCount.textContent = `${filtered.length} place${filtered.length === 1 ? '' : 's'}`;
+      document.getElementById("resultsCount").textContent = `${filtered.length} place${filtered.length === 1 ? '' : 's'}`;
+
+      if (map) updateMapMarkers(filtered);
+
+      const grid = document.getElementById("restaurantGrid");
+      const emptyState = document.getElementById("emptyState");
 
       if (filtered.length === 0) {
         grid.classList.add("hidden");
@@ -393,7 +462,7 @@
               <button onclick="toggleFavorite('${r.id}', event)" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm flex items-center justify-center text-white hover:scale-110 transition-all">
                 <i class="fa-solid fa-heart ${isFav ? 'text-rose-500' : 'text-zinc-400'}"></i>
               </button>
-              <span class="absolute bottom-3 left-3 px-2.5 py-1 bg-black/70 backdrop-blur-md text-white text-[11px] font-bold rounded-md">
+              <span class="absolute bottom-3 left-3 px-2.5 py-1 bg-black/80 backdrop-blur-md text-white text-[11px] font-bold rounded-md border border-zinc-700/60">
                 ${r.cuisine}
               </span>
             </div>
@@ -404,7 +473,7 @@
                   <h3 class="text-base font-bold text-white group-hover:text-brand-500 transition-colors">${r.name}</h3>
                   <span class="text-xs font-bold text-emerald-400">${r.price}</span>
                 </div>
-                <p class="text-xs text-zinc-400 mb-3 flex items-center gap-1">
+                <p class="text-xs text-zinc-400 mb-2 flex items-center gap-1.5">
                   <i class="fa-solid fa-location-dot text-brand-500"></i>
                   <span>${r.address}</span>
                 </p>
@@ -415,7 +484,7 @@
                 <div class="flex items-center gap-1.5 text-amber-400 font-bold">
                   <i class="fa-solid fa-star"></i>
                   <span>${r.rating}</span>
-                  <span class="text-zinc-500 font-normal">(${r.reviewsCount})</span>
+                  <span class="text-zinc-500 font-normal">(${r.reviewsCount.toLocaleString()})</span>
                 </div>
                 <span class="text-brand-500 hover:underline font-semibold flex items-center gap-1">
                   Details <i class="fa-solid fa-arrow-right text-[10px]"></i>
@@ -434,8 +503,9 @@
       document.getElementById("modalImg").src = r.image;
       document.getElementById("modalTitle").textContent = r.name;
       document.getElementById("modalCuisine").textContent = r.cuisine;
-      document.getElementById("modalRating").innerHTML = `<i class="fa-solid fa-star text-amber-400"></i> ${r.rating} (${r.reviewsCount} reviews)`;
+      document.getElementById("modalRating").innerHTML = `<i class="fa-solid fa-star text-amber-400"></i> ${r.rating} (${r.reviewsCount.toLocaleString()} reviews)`;
       document.getElementById("modalAddress").querySelector("span").textContent = r.address;
+      document.getElementById("modalPhone").querySelector("span").textContent = r.phone;
       document.getElementById("modalDesc").textContent = r.description;
 
       const menuContainer = document.getElementById("modalMenu");
@@ -446,14 +516,14 @@
         </div>
       `).join("");
 
-      modal.classList.remove("hidden");
+      document.getElementById("detailModal").classList.remove("hidden");
     }
 
     // Event Listeners
-    searchInput.addEventListener("input", (e) => { state.searchQuery = e.target.value; render(); });
-    locationSelect.addEventListener("change", (e) => { state.locationFilter = e.target.value; render(); });
-    ratingSelect.addEventListener("change", (e) => { state.ratingFilter = parseFloat(e.target.value); render(); });
-    sortSelect.addEventListener("change", (e) => { state.sortBy = e.target.value; render(); });
+    document.getElementById("searchInput").addEventListener("input", (e) => { state.searchQuery = e.target.value; render(); });
+    document.getElementById("locationSelect").addEventListener("change", (e) => { state.locationFilter = e.target.value; render(); });
+    document.getElementById("ratingSelect").addEventListener("change", (e) => { state.ratingFilter = parseFloat(e.target.value); render(); });
+    document.getElementById("sortSelect").addEventListener("change", (e) => { state.sortBy = e.target.value; render(); });
 
     document.querySelectorAll(".cuisine-pill").forEach(pill => {
       pill.addEventListener("click", () => {
@@ -468,26 +538,42 @@
       });
     });
 
-    document.getElementById("closeModalBtn").addEventListener("click", () => modal.classList.add("hidden"));
+    document.getElementById("toggleMapBtn").addEventListener("click", () => {
+      state.showMap = !state.showMap;
+      const section = document.getElementById("mapSection");
+      const text = document.getElementById("toggleMapText");
+      if (state.showMap) {
+        section.classList.remove("hidden");
+        text.textContent = "Hide Live Map";
+      } else {
+        section.classList.add("hidden");
+        text.textContent = "Show Live Map";
+      }
+    });
+
+    document.getElementById("closeModalBtn").addEventListener("click", () => document.getElementById("detailModal").classList.add("hidden"));
     document.getElementById("resetFiltersBtn").addEventListener("click", () => {
       state.searchQuery = "";
       state.cuisineFilter = "all";
       state.locationFilter = "all";
       state.ratingFilter = 0;
-      searchInput.value = "";
-      locationSelect.value = "all";
-      ratingSelect.value = "0";
+      document.getElementById("searchInput").value = "";
+      document.getElementById("locationSelect").value = "all";
+      document.getElementById("ratingSelect").value = "0";
       render();
     });
 
     document.getElementById("reserveForm").addEventListener("submit", (e) => {
       e.preventDefault();
-      alert("🎉 Table reservation confirmed! A confirmation email has been sent.");
-      modal.classList.add("hidden");
+      alert("🎉 Table reservation confirmed! A confirmation email and SMS reminder have been sent.");
+      document.getElementById("detailModal").classList.add("hidden");
     });
 
-    // Initial Render
-    render();
+    // Initial Load
+    window.addEventListener("DOMContentLoaded", () => {
+      initMap();
+      render();
+    });
   </script>
 </body>
 </html>

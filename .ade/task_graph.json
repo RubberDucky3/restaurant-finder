@@ -218,18 +218,25 @@
       "seq": 6,
       "kind": "code",
       "title": "Create API endpoints for restaurants",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         4
       ],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/backend/routes/restaurantRoutes.js b/backend/routes/restaurantRoutes.js\nnew file mode 100644\n--- /dev/null\n+++ b/backend/routes/restaurantRoutes.js\n@@ -0,0 +1,28 @@\nconst express = require('express');\nconst router = express.Router();\nconst restaurantController = require('../controllers/restaurantController');\n\nrouter.post('/', restaurantController.createRestaurant);\nrouter.get('/', restaurantController.getAllRestaurants);\nrouter.get('/:id', restaurantController.getRestaurantById);\nrouter.put('/:id', restaurantController.updateRestaurant);\nrouter.delete('/:id', restaurantController.deleteRestaurant);\n\nmodule.exports = router;\ndiff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\n--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -1,6 +1,7 @@\n const express = require('express');\n+const Restaurant = require('../models/restaurant');\n\n const router = express.Router();\n\n@@ -25,6 +26,30 @@ exports.createRestaurant = async (req, res) => {\n   try {\n     const restaurant = new Restaurant(req.body);\n     await restaurant.save();\n+    res.status(201).json(restaurant);\n+  } catch (error) {\n+    res.status(400).json({ message: error.message });\n+  }\n+};\n+\n+exports.getAllRestaurants = async (req, res) => {\n+  try {\n+    const restaurants = await Restaurant.find();\n+    res.json(restaurants);\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n+  }\n+};\n+\n+exports.getRestaurantById = async (req, res) => {\n+  try {\n+    const restaurant = await Restaurant.findById(req.params.id);\n+    if (!restaurant) {\n+      return res.status(404).json({ message: 'Restaurant not found' });\n+    }\n+    res.json(restaurant);\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n   }\n };",
+        "files_changed": [
+          "backend/routes/"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 7,
       "kind": "code",
       "title": "Create API endpoints for users",
-      "status": "queued",
+      "status": "running",
       "depends_on": [
         5
       ],
@@ -240,11 +247,16 @@
       "seq": 8,
       "kind": "test",
       "title": "Write unit tests for restaurant controller methods",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         4
       ],
-      "result": null,
+      "result": {
+        "passed": false,
+        "command": "npm test --if-present",
+        "output": "npm error code EJSONPARSE\nnpm error JSON.parse Invalid package.json: JSONParseError: Unexpected non-whitespace character after JSON at position 17 (line 1 column 18) while parsing near \"   \\\"dependencies\\\": {\\n     \\\"express\\\": ...\"\nnpm error JSON.parse Failed to parse JSON data.\nnpm error JSON.parse Note: package.json must be actual JSON, not just JavaScript.\nnpm error A complete log of this run can be found in: /Users/jeromefrancis/.npm/_logs/2026-07-24T22_59_14_237Z-debug-0.log",
+        "exit_code": 1
+      },
       "error": null
     },
     {

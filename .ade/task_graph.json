@@ -117,18 +117,25 @@
       "seq": 6,
       "kind": "code",
       "title": "Update restaurant routes to handle phone number and coordinates",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         4
       ],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/backend/routes/restaurantRoutes.js b/backend/routes/restaurantRoutes.js\nindex 1a2b3c4..5d6e7f8 100644\n--- a/backend/routes/restaurantRoutes.js\n+++ b/backend/routes/restaurantRoutes.js\n@@ -1,5 +1,6 @@\n const express = require('express');\n const router = express.Router();\n+const restaurantController = require('../controllers/restaurantController');\n \n // GET all restaurants\n router.get('/', (req, res) => {\n@@ -10,6 +11,23 @@ router.get('/', (req, res) => {\n });\n \n // POST a new restaurant\n+router.post('/', restaurantController.createRestaurant);\n+\n+// GET a single restaurant by ID\n+router.get('/:id', restaurantController.getRestaurantById);\n+\n+// PUT update an existing restaurant\n+router.put('/:id', restaurantController.updateRestaurant);\n+\n+// DELETE a restaurant\n+router.delete('/:id', restaurantController.deleteRestaurant);\n+\n+module.exports = router;\ndiff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\nindex 9a8b7c6..d5e4f32 100644\n--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -1,4 +1,5 @@\n const Restaurant = require('../models/restaurant');\n+const { body, validationResult } = require('express-validator/check');\n \n // Create and Save a new Restaurant\n exports.createRestaurant = (req, res) => {\n@@ -20,6 +21,7 @@ exports.createRestaurant = (req, res) => {\n     });\n };\n \n+// Retrieve all Restaurants from the database.\n exports.findAll = (req, res) => {\n     Restaurant.find()\n         .then(restaurants => res.send(restaurants))\n         .catch(err => res.status(500).send({\n             message: err.message || \"Some error occurred while retrieving restaurants.\"\n         }));\n };\n \n+// Find a single Restaurant with an id\n exports.findOne = (req, res) => {\n     const id = req.params.id;\n \n     Restaurant.findById(id)\n         .then(restaurant => {\n             if (!restaurant) {\n                 return res.status(404).send({\n                     message: \"Restaurant not found with id \" + id\n                 });\n             }\n             res.send(restaurant);\n         })\n         .catch(err => {\n             if (err.kind === 'ObjectId') {\n                 return res.status(404).send({\n                     message: \"Restaurant not found with id \" + id\n                 });\n             }\n             return res.status(500).send({\n                 message: \"Error retrieving restaurant with id \" + id\n             });\n         });\n };\n \n+// Update a Restaurant identified by the id in the request\n exports.update = (req, res) => {\n     const id = req.params.id;\n \n     Restaurant.findByIdAndUpdate(id, req.body, { useFindAndModify: false })\n         .then(restaurant => {\n             if (!restaurant) {\n                 return res.status(404).send({\n                     message: \"Restaurant not found with id \" + id\n                 });\n             }\n             res.send({ message: \"Restaurant was updated successfully.\" });\n         })\n         .catch(err => {\n             if (err.kind === 'ObjectId') {\n                 return res.status(404).send({\n                     message: \"Restaurant not found with id \" + id\n                 });\n             }\n             return res.status(500).send({\n                 message: \"Error updating restaurant with id \" + id\n             });\n         });\n };\n \n+// Delete a Restaurant with the specified id in the request\n exports.delete = (req, res) => {\n     const id = req.params.id;\n \n     Restaurant.findByIdAndRemove(id)\n         .then(restaurant => {\n             if (!restaurant) {\n                 return res.status(404).send({\n                     message: \"Restaurant not found with id \" + id\n                 });\n             }\n             res.send({ message: \"Restaurant was deleted successfully.\" });\n         })\n         .catch(err => {\n             return res.status(500).send({\n                 message: \"Could not delete restaurant with id \" + id\n             });\n         });\n };",
+        "files_changed": [
+          "backend/routes/restaurantRoutes.js"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 7,
       "kind": "code",
       "title": "Update user routes to handle phone number and coordinates",
-      "status": "queued",
+      "status": "running",
       "depends_on": [
         5
       ],
@@ -139,7 +146,7 @@
       "seq": 8,
       "kind": "test",
       "title": "Write unit tests for restaurant model",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         2,
         4,
@@ -165,7 +172,7 @@
       "seq": 10,
       "kind": "test",
       "title": "Write integration tests for restaurant controller",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         4,
         6

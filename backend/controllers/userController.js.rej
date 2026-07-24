@@ -1,10 +1,29 @@
 --- backend/controllers/userController.js
 +++ backend/controllers/userController.js
-@@ -1,6 +1,7 @@
- const express = require('express');
- const router = express.Router();
- const User = require('../models/user');
-+const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+@@ -10,6 +10,8 @@ const User = require('../models/user');
  
- // Register a new user
- router.post('/register', async (req, res) => {
+ // Create a new user
+ exports.createUser = async (req, res) => {
++    req.body.phoneNumber = req.body.phoneNumber || '';
++    req.body.coordinates = req.body.coordinates || {};
+     const user = new User(req.body);
+     try {
+         const savedUser = await user.save();
+@@ -25,6 +27,8 @@ exports.createUser = async (req, res) => {
+ 
+ // Update an existing user
+ exports.updateUser = async (req, res) => {
++    req.body.phoneNumber = req.body.phoneNumber || '';
++    req.body.coordinates = req.body.coordinates || {};
+     try {
+         const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+         if (!updatedUser) {
+@@ -40,6 +44,8 @@ exports.updateUser = async (req, res) => {
+ 
+ // Retrieve a single user
+ exports.getUser = async (req, res) => {
++    req.body.phoneNumber = req.body.phoneNumber || '';
++    req.body.coordinates = req.body.coordinates || {};
+     try {
+         const user = await User.findById(req.params.id);
+         if (!user) {

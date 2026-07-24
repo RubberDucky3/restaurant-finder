@@ -1,28 +1,11 @@
 {
-  "name": "restaurant-finder-backend",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "Backend for the Restaurant Finder app",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+  "author": "",
+  "license": "ISC"
 }
-diff --git a/backend/index.js b/backend/index.js
-new file mode 100644
-index 0000000..b3f5c9d
-++ b/backend/index.js
-@@ -0,0 +1,7 @@
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}/`);
-});

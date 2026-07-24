@@ -1,74 +1,59 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const router = express.Router();
-const User = require('../models/user');
-const bcrypt = require('bcryptjs');
+ body {
+     font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+}
 
-// Create a new user
-router.post('/', async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
-    let user = await User.findOne({ email });
-    if (user) return res.status(400).json({ message: 'User already exists' });
+.dark-mode {
+    background-color: #333;
+    color: #f4f4f9;
+}
+diff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js
+++ b/frontend/src/components/RegistrationForm.js
+@@ -1,6 +1,7 @@
+ import React from 'react';
+ import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useState } from 'react';
+ 
+ const RegistrationForm = ({ onSubmit }) => {
+     return (
+@@ -20,6 +21,7 @@ const RegistrationForm = ({ onSubmit }) => {
+                 <Field type="email" name="email" placeholder="Email" />
+                 <ErrorMessage name="email" component="div" className="error" />
+ 
+                <button type="submit">Register</button>
+             </Form>
+         </Formik>
+     );
+ };
+diff --git a/frontend/src/App.css b/frontend/src/App.css
+++ b/frontend/src/App.css
+@@ -1,3 +1,12 @@
+ body {
+     font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+}
 
-    user = new User({
-      username,
-      email,
-      password
-    });
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    await user.save();
-    res.status(201).json({ message: 'User created' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Get all users
-router.get('/', async (req, res) => {
-  try {
-    const users = await User.find();
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Update a user
-router.put('/:id', async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
-    let user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    user.username = username;
-    user.email = email;
-    user.password = password;
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
-
-    await user.save();
-    res.json({ message: 'User updated' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-// Delete a user
-router.delete('/:id', async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    await user.remove();
-    res.json({ message: 'User deleted' });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-module.exports = router;
+.dark-mode {
+    background-color: #333;
+    color: #f4f4f9;
+}
+diff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js
+++ b/frontend/src/components/RegistrationForm.js
+@@ -1,6 +1,7 @@
+ import React from 'react';
+ import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { useState } from 'react';
+ 
+ const RegistrationForm = ({ onSubmit }) => {
+     return (
+@@ -20,6 +21,7 @@ const RegistrationForm = ({ onSubmit }) => {
+                 <Field type="email" name="email" placeholder="Email" />
+                 <ErrorMessage name="email" component="div" className="error" />
+ 
+                <button type="submit">Register</button>
+             </Form>
+         </Formik>
+     );
+ };

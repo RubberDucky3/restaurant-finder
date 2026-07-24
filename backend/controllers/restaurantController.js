@@ -1,83 +1,83 @@
-@@ -10,6 +10,8 @@ const Restaurant = require('../models/restaurant');
+ const Restaurant = require('../models/restaurant');
+ const User = require('../models/user');
+const rateLimit = require('express-rate-limit');
  
- exports.updateRestaurant = async (req, res) => {
-     try {
-        if (!req.body.phoneNumber || !req.body.coordinates) {
-            return res.status(400).json({ message: 'Phone number and coordinates are required' });
-         const restaurantId = req.params.id;
-         const updatedRestaurant = await Restaurant.findByIdAndUpdate(restaurantId, req.body, { new: true });
-         if (!updatedRestaurant) {
-diff --git a/backend/controllers/userController.js b/backend/controllers/userController.js
-index 9a8b7c6..f5e4d32 100644
-++ b/backend/controllers/userController.js
-@@ -10,6 +10,8 @@ const User = require('../models/user');
- 
- exports.updateUser = async (req, res) => {
-     try {
-        if (!req.body.phoneNumber || !req.body.coordinates) {
-            return res.status(400).json({ message: 'Phone number and coordinates are required' });
-         const userId = req.params.id;
-         const updatedUser = await User.findByIdAndUpdate(userId, req.body, { new: true });
-         if (!updatedUser) {
+ // Create and Save a new Restaurant
+ exports.createRestaurant = async (req, res) => {
+diff --git a/backend/middleware/rateLimit.js b/backend/middleware/rateLimit.js
+new file mode 100644
+++ b/backend/middleware/rateLimit.js
+@@ -0,0 +1,12 @@
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100 // limit each IP to 100 requests per windowMs
+});
+
+module.exports = {
+  limiter
+};
 diff --git a/backend/routes/restaurantRoutes.js b/backend/routes/restaurantRoutes.js
-index 1a2b3c4..5d6e7f8 100644
 ++ b/backend/routes/restaurantRoutes.js
-@@ -10,6 +10,8 @@ const express = require('express');
+@@ -1,6 +1,7 @@
+ const express = require('express');
  const router = express.Router();
  const restaurantController = require('../controllers/restaurantController');
+const rateLimitMiddleware = require('../middleware/rateLimit').limiter;
  
-router.put('/:id', restaurantController.updateRestaurant);
-
- module.exports = router;
-diff --git a/backend/routes/userRoutes.js b/backend/routes/userRoutes.js
-index 9a8b7c6..f5e4d32 100644
-++ b/backend/routes/userRoutes.js
-@@ -10,6 +10,8 @@ const express = require('express');
- const router = express.Router();
- const userController = require('../controllers/userController');
- 
-router.put('/:id', userController.updateUser);
-
- module.exports = router;
-diff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js
-index 1a2b3c4..5d6e7f8 100644
-++ b/frontend/src/components/RegistrationForm.js
-@@ -10,6 +10,8 @@ import React, { useState } from 'react';
- const RegistrationForm = () => {
-     const [formData, setFormData] = useState({
-         phoneNumber: '',
-        coordinates: ''
-     });
- 
-     const handleChange = (e) => {
-diff --git a/frontend/src/App.css b/frontend/src/App.css
-index 1a2b3c4..5d6e7f8 100644
-++ b/frontend/src/App.css
-@@ -10,6 +10,8 @@ body {
-     font-family: Arial, sans-serif;
+ // Create a new Restaurant
+ router.post('/', restaurantController.createRestaurant);
+diff --git a/backend/package.json b/backend/package.json
+++ b/backend/package.json
+@@ -10,6 +10,7 @@
+   "dependencies": {
+     "express": "^4.17.1",
+     "mongoose": "^5.12.3"
+    "express-rate-limit": "^6.0.0"
+   },
+   "devDependencies": {}
  }
- 
-#phoneNumberInput, #coordinatesInput {
-    margin-top: 10px;
+diff --git a/frontend/css/dark-mode.css b/frontend/css/dark-mode.css
+new file mode 100644
+++ b/frontend/css/dark-mode.css
+@@ -0,0 +1,12 @@
+body {
+  background-color: #333;
+  color: #fff;
 }
-diff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js
-index 1a2b3c4..5d6e7f8 100644
-++ b/frontend/src/components/RegistrationForm.js
-@@ -10,6 +10,8 @@ import React, { useState } from 'react';
- const RegistrationForm = () => {
-     const [formData, setFormData] = useState({
-         phoneNumber: '',
-        coordinates: ''
-     });
- 
-     const handleChange = (e) => {
+
+h1, h2, h3, h4, h5, h6 {
+  color: #ddd;
+}
+
+a {
+  color: #007bff;
+}
 diff --git a/frontend/src/App.css b/frontend/src/App.css
-index 1a2b3c4..5d6e7f8 100644
 ++ b/frontend/src/App.css
-@@ -10,6 +10,8 @@ body {
-     font-family: Arial, sans-serif;
+@@ -1,3 +1,4 @@
+ body {
+   font-family: Arial, sans-serif;
  }
+
+ @import './dark-mode.css';
+diff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js
+++ b/frontend/src/components/RegistrationForm.js
+@@ -1,6 +1,7 @@
+ import React from 'react';
+ import { Formik, Form, Field } from 'formik';
+import { useTheme } from '@mui/material/styles';
  
-#phoneNumberInput, #coordinatesInput {
-    margin-top: 10px;
-}
+ const RegistrationForm = ({ onSubmit }) => {
+   return (
+diff --git a/index.html b/index.html
+++ b/index.html
+@@ -10,6 +10,7 @@
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Restaurant Finder</title>
+     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/dark-mode.css">
+   </head>
+   <body>
+     <div id="root"></div>

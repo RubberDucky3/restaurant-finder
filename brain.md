@@ -114,3 +114,6 @@ Goal: run the project
 - [2026-07-24 22:56:23] 📝 **Code Applied**: Modified 1 files for Task #22
 - [2026-07-24 22:56:23] ✅ **Completed Task #22 (code)**: Refactor backend models to use Mongoose schemas for restaurants and users
 - [2026-07-24 22:56:23] 🚀 **Started Task #4 (code)**: Implement restaurant controller methods
+- [2026-07-24 22:56:37] 📝 **Code Applied**: Modified 1 files for Task #4
+- [2026-07-24 22:56:37] ✅ **Completed Task #4 (code)**: Implement restaurant controller methods
+- [2026-07-24 22:56:37] 🚀 **Started Task #5 (code)**: Implement user controller methods

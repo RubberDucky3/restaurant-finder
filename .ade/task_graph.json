@@ -182,18 +182,25 @@
       "seq": 4,
       "kind": "code",
       "title": "Implement restaurant controller methods",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         2
       ],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\nindex 3a4b5c6..7d8e9f0 100644\n--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -1,6 +1,25 @@\n const express = require('express');\n+const router = express.Router();\n+\n+// Import the Restaurant model\n+const Restaurant = require('../models/restaurant');\n+\n+// Create a new restaurant\n+router.post('/', async (req, res) => {\n+  try {\n+    const restaurant = new Restaurant(req.body);\n+    await restaurant.save();\n+    res.status(201).json(restaurant);\n+  } catch (error) {\n+    res.status(400).json({ message: error.message });\n+  }\n+});\n+\n+// Get all restaurants\n+router.get('/', async (req, res) => {\n+  try {\n+    const restaurants = await Restaurant.find();\n+    res.json(restaurants);\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n+  }\n+});\n+\n module.exports = router;\ndiff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nindex 1a2b3c4..5d6e7f8 100644\n--- a/backend/models/restaurant.js\n+++ b/backend/models/restaurant.js\n@@ -1,6 +1,23 @@\n const mongoose = require('mongoose');\n\n+const restaurantSchema = new mongoose.Schema({\n+  name: {\n+    type: String,\n+    required: true\n+  },\n+  address: {\n+    type: String,\n+    required: true\n+  },\n+  cuisine: {\n+    type: String,\n+    required: true\n+  }\n+});\n+\n const Restaurant = mongoose.model('Restaurant', restaurantSchema);\n\n module.exports = Restaurant;",
+        "files_changed": [
+          "backend/controllers/restaurantController.js"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 5,
       "kind": "code",
       "title": "Implement user controller methods",
-      "status": "queued",
+      "status": "running",
       "depends_on": [
         3
       ],
@@ -204,7 +211,7 @@
       "seq": 6,
       "kind": "code",
       "title": "Create API endpoints for restaurants",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         4
       ],
@@ -226,7 +233,7 @@
       "seq": 8,
       "kind": "test",
       "title": "Write unit tests for restaurant controller methods",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         4
       ],

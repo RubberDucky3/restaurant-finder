@@ -1,12 +1,13 @@
-{
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "Backend service for the project",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "dependencies": {
-    "express": "^4.17.1"
-  }
-}
+   "dependencies": {
+     "express": "^4.17.1",
+     "mongoose": "^5.12.3"
+    "dotenv": "^10.0.0",  // For environment variables
+    "google-maps-api": "^1.0.0",  // For Google Maps integration
+    "moment-timezone": "^0.5.33",  // For handling time zones in dark mode
+    "express-session": "^1.17.2",  // For session management
+    "connect-mongo": "^4.6.0",  // For MongoDB session store
+    "bcryptjs": "^2.4.3",  // For password hashing
+    "jsonwebtoken": "^8.5.1"  // For JSON Web Tokens
+   },
+   "devDependencies": {
+     "nodemon": "^2.0.7"

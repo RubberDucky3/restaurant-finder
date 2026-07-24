@@ -261,11 +261,18 @@
       "seq": 14,
       "kind": "code",
       "title": "Refactor frontend components for registration form",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         10
       ],
-      "result": null,
+      "result": {
+        "patch": "--- a/frontend/src/components/RegistrationForm.js\n+++ b/frontend/src/components/RegistrationForm.js\n@@ -1,5 +1,7 @@\n import React, { useState } from 'react';\n+import GoogleMapReact from 'google-maps-react';\n \n const RegistrationForm = () => {\n   const [name, setName] = useState('');\n@@ -10,6 +12,18 @@ const RegistrationForm = () => {\n     setEmail(e.target.value);\n   };\n \n+  const handleMapChange = (map, maps) => {\n+    // Handle map change\n+  };\n+\n+  return (\n+    <div style={{ height: '50vh', width: '100%' }}>\n+      <GoogleMapReact\n+        bootstrapURLKeys={{ key: 'YOUR_GOOGLE_MAPS_API_KEY' }}\n+        defaultCenter={center}\n+        defaultZoom={zoom}\n+        onChange={handleMapChange}\n+      >\n+      </GoogleMapReact>\n+    </div>\n+  );\n };\n \n export default RegistrationForm;",
+        "files_changed": [
+          "frontend/src/components/RegistrationForm.js"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
@@ -283,7 +290,7 @@
       "seq": 16,
       "kind": "code",
       "title": "Refactor backend package.json for dependencies",
-      "status": "queued",
+      "status": "running",
       "depends_on": [
         10
       ],

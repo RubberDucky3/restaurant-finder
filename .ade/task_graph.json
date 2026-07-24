@@ -404,18 +404,22 @@
       "seq": 21,
       "kind": "commit",
       "title": "Commit backend model updates",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         19
       ],
-      "result": null,
+      "result": {
+        "commit_sha": "0c85a55a1751",
+        "branch": "main",
+        "message": "Commit backend model updates\n\nCommit the changes made to the `restaurant.js` and `user.js` models along with the new API routes."
+      },
       "error": null
     },
     {
       "seq": 22,
       "kind": "commit",
       "title": "Commit frontend components",
-      "status": "pending",
+      "status": "running",
       "depends_on": [
         18,
         20
@@ -427,7 +431,7 @@
       "seq": 23,
       "kind": "deploy",
       "title": "Deploy backend changes to production",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         21
       ],

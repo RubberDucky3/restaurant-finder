@@ -219,18 +219,25 @@
       "seq": 12,
       "kind": "code",
       "title": "Refactor backend controllers and models for restaurant operations",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         10
       ],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\nnew file mode 100644\n--- /dev/null\n+++ b/backend/controllers/restaurantController.js\n@@ -0,0 +1,52 @@\n+const Restaurant = require('../models/restaurant');\n+\n+exports.getGlobalRestaurants = async (req, res) => {\n+    try {\n+        const restaurants = await Restaurant.find({});\n+        if (!restaurants || restaurants.length === 0) {\n+            return res.status(404).json({ message: 'No global restaurants found' });\n+        }\n+        res.json(restaurants);\n+    } catch (error) {\n+        res.status(500).json({ message: error.message });\n+    }\n+};\n+\n+exports.addGlobalRestaurant = async (req, res) => {\n+    const { name, location, cuisine } = req.body;\n+    if (!name || !location || !cuisine) {\n+        return res.status(400).json({ message: 'All fields are required' });\n+    }\n+\n+    const restaurant = new Restaurant({\n+        name,\n+        location,\n+        cuisine\n+    });\n+\n+    try {\n+        const newRestaurant = await restaurant.save();\n+        res.status(201).json(newRestaurant);\n+    } catch (error) {\n+        res.status(400).json({ message: error.message });\n+    }\n+};\ndiff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nnew file mode 100644\n--- /dev/null\n+++ b/backend/models/restaurant.js\n@@ -0,0 +1,23 @@\n+const mongoose = require('mongoose');\n+\n+const restaurantSchema = new mongoose.Schema({\n+    name: {\n+        type: String,\n+        required: true\n+    },\n+    location: {\n+        type: String,\n+        required: true\n+    },\n+    cuisine: {\n+        type: String,\n+        required: true\n+    }\n+});\n+\n+const Restaurant = mongoose.model('Restaurant', restaurantSchema);\n+\n+module.exports = Restaurant;\ndiff --git a/backend/routes/restaurantRoutes.js b/backend/routes/restaurantRoutes.js\nnew file mode 100644\n--- /dev/null\n+++ b/backend/routes/restaurantRoutes.js\n@@ -0,0 +1,23 @@\n+const express = require('express');\n+const router = express.Router();\n+const restaurantController = require('../controllers/restaurantController');\n+\n+router.get('/global', restaurantController.getGlobalRestaurants);\n+router.post('/', restaurantController.addGlobalRestaurant);\n+\n+module.exports = router;\ndiff --git a/backend/server.js b/backend/server.js\nindex 0a1b2c3..4d5e6f7 100644\n--- a/backend/server.js\n+++ b/backend/server.js\n@@ -1,5 +1,6 @@\n const express = require('express');\n+const restaurantRoutes = require('./routes/restaurantRoutes');\n const app = express();\n const port = process.env.PORT || 3000;\n \n@@ -8,4 +9,5 @@ app.use(express.json());\n \n // Define routes\n app.get('/', (req, res) => res.send('Hello World!'));\n+app.use('/api/restaurants', restaurantRoutes);\n \n app.listen(port, () => console.log(`Server running on port ${port}`));",
+        "files_changed": [
+          "backend/controllers/restaurantController.js"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 13,
       "kind": "code",
       "title": "Secure Google Maps API key management",
-      "status": "queued",
+      "status": "running",
       "depends_on": [
         10
       ],
@@ -285,7 +292,7 @@
       "seq": 18,
       "kind": "test",
       "title": "Run backend unit tests",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         10,
         12

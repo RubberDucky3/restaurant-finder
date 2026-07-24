@@ -86,3 +86,6 @@ Track project vision, architectural decisions, and current status.
 - [2026-07-24 23:01:56] 🔄 **Loop Evaluation**: Incomplete (Looping) — The code patch includes the creation of models and controllers for restaurants and users, but it lacks proper validation and security measures.
   - Follow-up Goal: Fix code review issues: 1. The restaurant model is missing a rating field in the schema.; 2. The user model should include additional fields such as name and address.; 3. Passwords should not be stored in plain text; use bcrypt for hashing.; 4. Validation for input data is missing, which can lead to security vulnerabilities.; 5. Error handling could be improved by providing more specific error messages.. Generate complete, functional package.json files, dependencies, and main entry points.
 - [2026-07-24 23:02:13] 🚀 **Started Task #28 (code)**: Update package.json files for backend and frontend
+- [2026-07-24 23:02:27] 📝 **Code Applied**: Modified 1 files for Task #28
+- [2026-07-24 23:02:27] ✅ **Completed Task #28 (code)**: Update package.json files for backend and frontend
+- [2026-07-24 23:02:28] 🚀 **Started Task #4 (code)**: Update restaurant controller to handle phone number and coordinates

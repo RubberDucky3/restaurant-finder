@@ -81,18 +81,25 @@
       "seq": 4,
       "kind": "code",
       "title": "Update restaurant controller to handle phone number and coordinates",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         2
       ],
-      "result": null,
+      "result": {
+        "patch": "--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -1,5 +1,7 @@\n const Restaurant = require('../models/restaurant');\n \n+const geolib = require('geolib');\n+\n // Create a new restaurant\n exports.createRestaurant = async (req, res) => {\n     try {\n@@ -20,6 +22,8 @@ exports.createRestaurant = async (req, res) => {\n         const { name, address, cuisine, phoneNumber, coordinates } = req.body;\n \n         const newRestaurant = new Restaurant({\n+            phoneNumber,\n+            coordinates: geolib.parseCoordinates(coordinates),\n             name,\n             address,\n             cuisine\n@@ -40,6 +44,8 @@ exports.updateRestaurant = async (req, res) => {\n     try {\n         const { id } = req.params;\n         const { name, address, cuisine, phoneNumber, coordinates } = req.body;\n+        const parsedCoordinates = geolib.parseCoordinates(coordinates);\n \n         const updatedRestaurant = await Restaurant.findByIdAndUpdate(id, {\n             name,\n@@ -50,6 +56,7 @@ exports.updateRestaurant = async (req, res) => {\n             cuisine,\n             phoneNumber,\n             coordinates: parsedCoordinates\n+        }, { new: true });\n \n         if (!updatedRestaurant) {\n             return res.status(404).json({ message: 'Restaurant not found' });\n@@ -65,6 +72,8 @@ exports.getRestaurantById = async (req, res) => {\n     try {\n         const { id } = req.params;\n \n+        const restaurant = await Restaurant.findById(id);\n+\n         if (!restaurant) {\n             return res.status(404).json({ message: 'Restaurant not found' });\n         }\n@@ -80,6 +89,7 @@ exports.getAllRestaurants = async (req, res) => {\n     try {\n         const restaurants = await Restaurant.find();\n \n+        const parsedRestaurants = restaurants.map(restaurant => ({\n             ...restaurant.toObject(),\n-            coordinates: geolib.formatCoordinates(restaurant.coordinates)\n+            coordinates: geolib.formatCoordinates(restaurant.coordinates),\n+            phoneNumber: restaurant.phoneNumber\n         }));\n \n         res.json(parsedRestaurants);",
+        "files_changed": [
+          "backend/controllers/restaurantController.js"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 5,
       "kind": "code",
       "title": "Update user controller to handle phone number and coordinates",
-      "status": "queued",
+      "status": "running",
       "depends_on": [
         3
       ],
@@ -103,7 +110,7 @@
       "seq": 6,
       "kind": "code",
       "title": "Update restaurant routes to handle phone number and coordinates",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         4
       ],

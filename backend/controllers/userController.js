@@ -1,59 +1,40 @@
- body {
-     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-}
+ const User = require('../models/user');
+ 
+const geolib = require('geolib');
 
-.dark-mode {
-    background-color: #333;
-    color: #f4f4f9;
-}
-diff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js
-++ b/frontend/src/components/RegistrationForm.js
-@@ -1,6 +1,7 @@
- import React from 'react';
- import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useState } from 'react';
+ // Create a new user
+ exports.createUser = async (req, res) => {
+     try {
+@@ -20,6 +22,8 @@ exports.createUser = async (req, res) => {
+         });
+     } catch (error) {
+         return res.status(500).json({ message: error.message });
+    }
+};
  
- const RegistrationForm = ({ onSubmit }) => {
-     return (
-@@ -20,6 +21,7 @@ const RegistrationForm = ({ onSubmit }) => {
-                 <Field type="email" name="email" placeholder="Email" />
-                 <ErrorMessage name="email" component="div" className="error" />
+ // Update an existing user
+ exports.updateUser = async (req, res) => {
+@@ -34,6 +38,12 @@ exports.updateUser = async (req, res) => {
+         return res.status(404).json({ message: 'User not found' });
+     }
  
-                <button type="submit">Register</button>
-             </Form>
-         </Formik>
-     );
+    if (req.body.phoneNumber && req.body.latitude && req.body.longitude) {
+        user.phoneNumber = req.body.phoneNumber;
+        user.location = geolib.getPointFromCoordinates(req.body.latitude, req.body.longitude);
+    }
+
+     await user.save();
+     res.json(user);
  };
-diff --git a/frontend/src/App.css b/frontend/src/App.css
-++ b/frontend/src/App.css
-@@ -1,3 +1,12 @@
- body {
-     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-}
+@@ -45,6 +55,12 @@ exports.getUserById = async (req, res) => {
+         return res.status(404).json({ message: 'User not found' });
+     }
+ 
+    if (user.location) {
+        const { latitude, longitude } = user.location;
+        user.latitude = latitude;
+        user.longitude = longitude;
+    }
 
-.dark-mode {
-    background-color: #333;
-    color: #f4f4f9;
-}
-diff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js
-++ b/frontend/src/components/RegistrationForm.js
-@@ -1,6 +1,7 @@
- import React from 'react';
- import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useState } from 'react';
- 
- const RegistrationForm = ({ onSubmit }) => {
-     return (
-@@ -20,6 +21,7 @@ const RegistrationForm = ({ onSubmit }) => {
-                 <Field type="email" name="email" placeholder="Email" />
-                 <ErrorMessage name="email" component="div" className="error" />
- 
-                <button type="submit">Register</button>
-             </Form>
-         </Formik>
-     );
+     res.json(user);
  };

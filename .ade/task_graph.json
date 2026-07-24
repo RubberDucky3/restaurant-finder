@@ -397,18 +397,25 @@
       "seq": 16,
       "kind": "code",
       "title": "Add validation for input data",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         15
       ],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\nindex 3f4b5c6..e7d8a9b 100644\n--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -1,6 +1,7 @@\n const express = require('express');\n+const { validationResult } = require('express-validator');\n const router = express.Router();\n \n const Restaurant = require('../models/restaurant');\n@@ -25,6 +26,14 @@ exports.createRestaurant = async (req, res) => {\n     try {\n         const errors = validationResult(req);\n         if (!errors.isEmpty()) {\n+            return res.status(400).json({ errors: errors.array() });\n+        }\n+\n+        const { name, address, cuisine } = req.body;\n+\n+        // Validate input data\n+        if (!name || !address || !cuisine) {\n+            return res.status(400).json({ message: 'All fields are required' });\n         }\n \n         const restaurant = new Restaurant({\n@@ -52,6 +61,14 @@ exports.getRestaurantById = async (req, res) => {\n     try {\n         const errors = validationResult(req);\n         if (!errors.isEmpty()) {\n+            return res.status(400).json({ errors: errors.array() });\n+        }\n+\n+        const { id } = req.params;\n+\n+        // Validate input data\n+        if (!id) {\n+            return res.status(400).json({ message: 'ID is required' });\n         }\n \n         const restaurant = await Restaurant.findById(req.params.id);\ndiff --git a/backend/controllers/userController.js b/backend/controllers/userController.js\nindex 3f4b5c6..e7d8a9b 100644\n--- a/backend/controllers/userController.js\n+++ b/backend/controllers/userController.js\n@@ -1,6 +1,7 @@\n const express = require('express');\n+const { validationResult } = require('express-validator');\n const router = express.Router();\n \n const User = require('../models/user');\n@@ -25,6 +26,14 @@ exports.createUser = async (req, res) => {\n     try {\n         const errors = validationResult(req);\n         if (!errors.isEmpty()) {\n+            return res.status(400).json({ errors: errors.array() });\n+        }\n+\n+        const { name, email, password } = req.body;\n+\n+        // Validate input data\n+        if (!name || !email || !password) {\n+            return res.status(400).json({ message: 'All fields are required' });\n         }\n \n         let user = await User.findOne({ email });\n@@ -52,6 +61,14 @@ exports.getUserById = async (req, res) => {\n     try {\n         const errors = validationResult(req);\n         if (!errors.isEmpty()) {\n+            return res.status(400).json({ errors: errors.array() });\n+        }\n+\n+        const { id } = req.params;\n+\n+        // Validate input data\n+        if (!id) {\n+            return res.status(400).json({ message: 'ID is required' });\n         }\n \n         const user = await User.findById(req.params.id);",
+        "files_changed": [
+          "backend/controllers/restaurantController.js"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 17,
       "kind": "code",
       "title": "Improve error handling with specific messages",
-      "status": "pending",
+      "status": "running",
       "depends_on": [
         16
       ],
@@ -435,12 +442,17 @@
       "seq": 19,
       "kind": "test",
       "title": "Write unit tests for user model",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         14,
         15
       ],
-      "result": null,
+      "result": {
+        "passed": false,
+        "command": "npm test --if-present",
+        "output": "npm error code EJSONPARSE\nnpm error JSON.parse Invalid package.json: JSONParseError: Expected property name or '}' in JSON at position 171 (line 7 column 1) while parsing near \"...s\\\",\\n   \\\"scripts\\\": {\\n@@ -13,6 +15,8 @@\\n  ...\"\nnpm error JSON.parse Failed to parse JSON data.\nnpm error JSON.parse Note: package.json must be actual JSON, not just JavaScript.\nnpm error A complete log of this run can be found in: /Users/jeromefrancis/.npm/_logs/2026-07-24T23_05_26_929Z-debug-0.log",
+        "exit_code": 1
+      },
       "error": null
     },
     {

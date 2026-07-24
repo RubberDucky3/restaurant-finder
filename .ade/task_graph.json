@@ -474,18 +474,22 @@
       "seq": 26,
       "kind": "commit",
       "title": "Commit changes for backend package.json",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         24
       ],
-      "result": null,
+      "result": {
+        "commit_sha": "857b89c9974c",
+        "branch": "main",
+        "message": "Commit changes for backend package.json\n\nCommit the updated `backend/package.json` file with a descriptive commit message indicating the necessary dependencies and scripts added."
+      },
       "error": null
     },
     {
       "seq": 27,
       "kind": "commit",
       "title": "Commit changes for frontend package.json",
-      "status": "queued",
+      "status": "running",
       "depends_on": [
         25
       ],

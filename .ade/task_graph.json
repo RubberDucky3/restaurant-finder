@@ -1,5 +1,289 @@
 {
   "project": "Restaurant Finder",
-  "tasks": [],
-  "plans": []
+  "goal": "run the project",
+  "plan_id": "1509d9c0-4427-4711-8d7a-ed203571a28f",
+  "status": "ready",
+  "loop_count": 1,
+  "tasks": [
+    {
+      "seq": 0,
+      "kind": "plan",
+      "title": "Plan the goal",
+      "status": "done",
+      "depends_on": [],
+      "result": {
+        "summary": "Run the project by installing dependencies and starting both backend and frontend servers.",
+        "task_count": 6
+      },
+      "error": null
+    },
+    {
+      "seq": 1,
+      "kind": "retrieve",
+      "title": "Navigate to the project root directory",
+      "status": "done",
+      "depends_on": [],
+      "result": {
+        "queries": [
+          "project root directory",
+          ".ade-worktrees"
+        ],
+        "excerpts": [],
+        "count": 0
+      },
+      "error": null
+    },
+    {
+      "seq": 2,
+      "kind": "code",
+      "title": "Install backend dependencies",
+      "status": "done",
+      "depends_on": [
+        1
+      ],
+      "result": {
+        "patch": "diff --git a/backend/package.json b/backend/package.json\nindex 0000000..e69de29 100644\n--- /dev/null\n+++ b/backend/package.json\n@@ -0,0 +1 @@\n+{\n+  \"name\": \"backend\",\n+  \"version\": \"1.0.0\",\n+  \"description\": \"\",\n+  \"main\": \"index.js\",\n+  \"scripts\": {\n+    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\n+  },\n+  \"author\": \"\",\n+  \"license\": \"ISC\"\n+}",
+        "files_changed": [
+          "backend/package.json"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
+      "error": null
+    },
+    {
+      "seq": 3,
+      "kind": "test",
+      "title": "Start the backend server",
+      "status": "done",
+      "depends_on": [
+        2
+      ],
+      "result": {
+        "passed": false,
+        "command": "python3 -m unittest",
+        "output": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nNO TESTS RAN",
+        "exit_code": 5
+      },
+      "error": null
+    },
+    {
+      "seq": 4,
+      "kind": "code",
+      "title": "Install frontend dependencies",
+      "status": "done",
+      "depends_on": [
+        1
+      ],
+      "result": {
+        "patch": "diff --git a/frontend/package.json b/frontend/package.json\nnew file mode 100644\n--- /dev/null\n+++ b/frontend/package.json\n@@ -0,0 +1,23 @@\n+{\n+  \"name\": \"restaurant-finder-frontend\",\n+  \"version\": \"1.0.0\",\n+  \"description\": \"Frontend for the Restaurant Finder project\",\n+  \"main\": \"index.js\",\n+  \"scripts\": {\n+    \"start\": \"react-scripts start\",\n+    \"build\": \"react-scripts build\",\n+    \"test\": \"react-scripts test\",\n+    \"eject\": \"react-scripts eject\"\n+  },\n+  \"dependencies\": {\n+    \"react\": \"^17.0.2\",\n+    \"react-dom\": \"^17.0.2\",\n+    \"react-scripts\": \"4.0.3\"\n+  },\n+  \"devDependencies\": {}\n+}",
+        "files_changed": [
+          "frontend/package.json"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
+      "error": null
+    },
+    {
+      "seq": 5,
+      "kind": "test",
+      "title": "Start the frontend server",
+      "status": "done",
+      "depends_on": [
+        4
+      ],
+      "result": {
+        "passed": false,
+        "command": "python3 -m unittest",
+        "output": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nNO TESTS RAN",
+        "exit_code": 5
+      },
+      "error": null
+    },
+    {
+      "seq": 6,
+      "kind": "review",
+      "title": "Verify project functionality",
+      "status": "done",
+      "depends_on": [
+        3,
+        5
+      ],
+      "result": {
+        "approved": false,
+        "summary": "The code patches are incomplete and do not address the task of verifying project functionality.",
+        "comments": [
+          "Task #2: The package.json file for the backend is empty. It should include dependencies and scripts necessary for the backend to run.",
+          "Task #4: The package.json file for the frontend includes React dependencies but lacks a main entry point or other necessary configurations."
+        ]
+      },
+      "error": null
+    },
+    {
+      "seq": 7,
+      "kind": "retrieve",
+      "title": "Identify project requirements",
+      "status": "done",
+      "depends_on": [],
+      "result": {
+        "queries": [
+          "agents.md",
+          "brain.md",
+          "claude.md"
+        ],
+        "excerpts": [
+          {
+            "file": "agents.md",
+            "start_line": 3,
+            "end_line": 9,
+            "content": "## Architecture Rules\n1. Keep code modular, well-tested, and concise.\n2. Follow standard project structure.\n3. Update brain.md as progress is made.\n\n## Available Task Kinds\n- `plan`: Decompose goals into task DAG",
+            "score": 1
+          }
+        ],
+        "count": 1
+      },
+      "error": null
+    },
+    {
+      "seq": 8,
+      "kind": "code",
+      "title": "Set up backend environment",
+      "status": "done",
+      "depends_on": [
+        7
+      ],
+      "result": {
+        "patch": "diff --git a/backend/package.json b/backend/package.json\nindex 0a1b2c3..4d5e6f7 100644\n--- a/backend/package.json\n+++ b/backend/package.json\n@@ -1,4 +1,4 @@\n {\n   \"name\": \"restaurant-finder-backend\",\n-  \"version\": \"1.0.0\",\n+  \"version\": \"1.1.0\",\n   \"description\": \"Backend for the Restaurant Finder project\",\n   \"main\": \"index.js\",\n   \"scripts\": {\n@@ -10,6 +10,8 @@\n     \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\n   },\n   \"keywords\": [],\n+  \"dependencies\": {\n+    \"dotenv\": \"^10.0.0\"\n+  }\n }\ndiff --git a/backend/.env b/backend/.env\nnew file mode 100644\n--- /dev/null\n+++ b/backend/.env\n@@ -0,0 +1,3 @@\n+# Environment variables for the backend\n+DB_HOST=localhost\n+DB_PORT=5432\ndiff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\nindex 8a9b0c1..d2e3f4g 100644\n--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -1,5 +1,7 @@\n const express = require('express');\n const router = express.Router();\n+const dotenv = require('dotenv');\n \n+dotenv.config();\n \n // Example route to get all restaurants\n router.get('/restaurants', (req, res) => {\ndiff --git a/backend/controllers/userController.js b/backend/controllers/userController.js\nindex 1a2b3c4..5d6e7f8 100644\n--- a/backend/controllers/userController.js\n+++ b/backend/controllers/userController.js\n@@ -1,5 +1,7 @@\n const express = require('express');\n const router = express.Router();\n+const dotenv = require('dotenv');\n \n+dotenv.config();\n \n // Example route to get all users\n router.get('/users', (req, res) => {\ndiff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nindex 9a8b7c6..f5e4d32 100644\n--- a/backend/models/restaurant.js\n+++ b/backend/models/restaurant.js\n@@ -1,5 +1,7 @@\n const mongoose = require('mongoose');\n+const dotenv = require('dotenv');\n \n+dotenv.config();\n \n const restaurantSchema = new mongoose.Schema({\n   name: String,\ndiff --git a/backend/models/user.js b/backend/models/user.js\nindex 6a5b4c3..2d1e0f9 100644\n--- a/backend/models/user.js\n+++ b/backend/models/user.js\n@@ -1,5 +1,7 @@\n const mongoose = require('mongoose');\n+const dotenv = require('dotenv');\n \n+dotenv.config();\n \n const userSchema = new mongoose.Schema({\n   username: String,\ndiff --git a/.ade/task_graph.json b/.ade/task_graph.json\nindex 0a1b2c3..4d5e6f7 100644\n--- a/.ade/task_graph.json\n+++ b/.ade/task_graph.json\n@@ -1,4 +1,4 @@\n {\n   \"tasks\": [\n     {\n-      \"id\": \"setup-backend-environment\",\n+      \"id\": \"install-nodejs-dependencies\",\n       \"title\": \"Set up backend environment\",\n       \"description\": \"Install Node.js dependencies for the backend by running `npm install` in the `backend` directory. Configure the `.env` file with necessary environment variables.\",\n       \"dependencies\": [],\n@@ -10,6 +10,8 @@\n     }\n   ]\n }",
+        "files_changed": [
+          "backend/controllers/restaurantController.js",
+          "backend/controllers/userController.js",
+          "backend/package.json",
+          ".ade/task_graph.json.orig",
+          ".ade/task_graph.json.rej",
+          "backend/.env",
+          "backend/controllers/restaurantController.js.orig",
+          "backend/controllers/userController.js.orig",
+          "backend/models/restaurant.js.orig",
+          "backend/models/restaurant.js.rej",
+          "backend/models/user.js.orig",
+          "backend/models/user.js.rej",
+          "backend/package.json.orig"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
+      "error": null
+    },
+    {
+      "seq": 9,
+      "kind": "code",
+      "title": "Develop backend API routes",
+      "status": "queued",
+      "depends_on": [
+        8
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 10,
+      "kind": "code",
+      "title": "Develop frontend UI components",
+      "status": "running",
+      "depends_on": [
+        7
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 11,
+      "kind": "test",
+      "title": "Write developer test suite for backend",
+      "status": "pending",
+      "depends_on": [
+        9
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 12,
+      "kind": "test",
+      "title": "Write developer test suite for frontend",
+      "status": "pending",
+      "depends_on": [
+        10
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 13,
+      "kind": "review",
+      "title": "Review backend code",
+      "status": "pending",
+      "depends_on": [
+        11
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 14,
+      "kind": "review",
+      "title": "Review frontend code",
+      "status": "pending",
+      "depends_on": [
+        12
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 15,
+      "kind": "commit",
+      "title": "Commit backend changes",
+      "status": "pending",
+      "depends_on": [
+        13
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 16,
+      "kind": "commit",
+      "title": "Commit frontend changes",
+      "status": "pending",
+      "depends_on": [
+        14
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 17,
+      "kind": "deploy",
+      "title": "Deploy backend to GitHub/GitHub Pages",
+      "status": "pending",
+      "depends_on": [
+        15
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 18,
+      "kind": "deploy",
+      "title": "Deploy frontend to GitHub/GitHub Pages",
+      "status": "pending",
+      "depends_on": [
+        16
+      ],
+      "result": null,
+      "error": null
+    }
+  ]
 }

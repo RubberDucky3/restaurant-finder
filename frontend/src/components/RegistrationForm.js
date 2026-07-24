@@ -1,40 +1,78 @@
- import React, { useState } from 'react';
- 
- const RegistrationForm = () => {
-  const [restaurantDetails, setRestaurantDetails] = useState(null);
- 
-   const handleSubmit = (event) => {
-     event.preventDefault();
-@@ -20,6 +21,14 @@ const RegistrationForm = () => {
-       // Handle form submission
-     });
-   };
+import React, { useState } from 'react';
 
-  const fetchRestaurantDetails = async (restaurantId) => {
+const RegistrationForm = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await fetch(`/api/restaurants/${restaurantId}`);
-      const data = await response.json();
-      setRestaurantDetails(data);
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      if (response.ok) {
+        alert('Registration successful!');
+      } else {
+        alert('Registration failed. Please try again.');
+      }
     } catch (error) {
-      console.error('Error fetching restaurant details:', error);
+      console.error('Error registering:', error);
+      alert('An error occurred. Please try again later.');
     }
   };
- 
-   return (
-     <form onSubmit={handleSubmit}>
-@@ -30,6 +49,12 @@ const RegistrationForm = () => {
-       <button type="submit">Submit</button>
-     </form>
-   );
 
-  if (restaurantDetails) {
-    return (
+  return (
+    <form onSubmit={handleSubmit}>
       <div>
-        <h1>{restaurantDetails.name}</h1>
-        <p>{restaurantDetails.description}</p>
+        <label htmlFor="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+        />
       </div>
-    );
-  }
- };
- 
- export default RegistrationForm;
+      <div>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <button type="submit">Register</button>
+    </form>
+  );
+};
+
+export default RegistrationForm;

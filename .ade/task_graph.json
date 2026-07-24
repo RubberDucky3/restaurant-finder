@@ -550,18 +550,25 @@
       "seq": 31,
       "kind": "code",
       "title": "Generate a functional package.json file for the backend",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         30
       ],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/backend/package.json b/backend/package.json\nnew file mode 100644\nindex 0000000..e3b0c44\n--- /dev/null\n+++ b/backend/package.json\n@@ -0,0 +1,28 @@\n+{\n+  \"name\": \"backend\",\n+  \"version\": \"1.0.0\",\n+  \"description\": \"Backend for the project\",\n+  \"main\": \"index.js\",\n+  \"scripts\": {\n+    \"start\": \"node index.js\",\n+    \"test\": \"jest\"\n+  },\n+  \"dependencies\": {\n+    \"express\": \"^4.17.1\",\n+    \"mongoose\": \"^5.12.3\"\n+  },\n+  \"devDependencies\": {\n+    \"jest\": \"^27.0.6\"\n+  }\n+}",
+        "files_changed": [
+          "backend/package.json"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 32,
       "kind": "test",
       "title": "Test the backend package.json file",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         31
       ],
@@ -572,7 +579,7 @@
       "seq": 33,
       "kind": "code",
       "title": "Generate a functional package.json file for the frontend",
-      "status": "queued",
+      "status": "running",
       "depends_on": [
         30
       ],

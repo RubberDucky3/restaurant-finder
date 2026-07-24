@@ -91,3 +91,6 @@ Track project vision, architectural decisions, and current status.
 - [2026-07-24 23:07:47] 📝 **Code Applied**: Modified 3 files for Task #15
 - [2026-07-24 23:07:47] ✅ **Completed Task #15 (code)**: Create API routes to update venue information
 - [2026-07-24 23:07:47] 🚀 **Started Task #36 (code)**: Implement Rate-Limiting for Public Restaurant Data
+- [2026-07-24 23:08:05] 📝 **Code Applied**: Modified 1 files for Task #36
+- [2026-07-24 23:08:05] ✅ **Completed Task #36 (code)**: Implement Rate-Limiting for Public Restaurant Data
+- [2026-07-24 23:08:05] 🚀 **Started Task #16 (code)**: Implement frontend components to input and display venue information

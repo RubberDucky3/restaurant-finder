@@ -1,112 +1,52 @@
-const axios = require('axios');
-
-exports.getRestaurants = async (req, res) => {
-  try {
-    const response = await axios.get('https://api.example.com/restaurants'); // Replace with actual API endpoint
-    const restaurants = response.data;
-    res.status(200).json(restaurants);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch restaurants' });
-  }
-};
-
-exports.addRestaurant = async (req, res) => {
-  try {
-    const { name, address, cuisine } = req.body;
-    // Add restaurant logic here
-    res.status(201).json({ message: 'Restaurant added successfully' });
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to add restaurant' });
-  }
-};
-diff --git a/backend/models/restaurant.js b/backend/models/restaurant.js
-new file mode 100644
-++ b/backend/models/restaurant.js
-@@ -0,0 +1,15 @@
-const mongoose = require('mongoose');
-
-const restaurantSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  address: { type: String, required: true },
-  cuisine: { type: String, required: true }
-});
-
-const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-
-module.exports = Restaurant;
-diff --git a/backend/routes/restaurantRoutes.js b/backend/routes/restaurantRoutes.js
-new file mode 100644
-++ b/backend/routes/restaurantRoutes.js
-@@ -0,0 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const restaurantController = require('../controllers/restaurantController');
+const axios = require('axios');
 
-router.get('/restaurants', restaurantController.getRestaurants);
-router.post('/restaurants', restaurantController.addRestaurant);
+// Endpoint to fetch restaurant data from a public API
+router.get('/restaurants', async (req, res) => {
+  try {
+    const response = await axios.get('https://api.example.com/restaurants');
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch restaurant data' });
+  }
+});
+
+// Endpoint to fetch a specific restaurant by ID
+router.get('/restaurants/:id', async (req, res) => {
+  try {
+    const response = await axios.get(`https://api.example.com/restaurants/${req.params.id}`);
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch restaurant data' });
+  }
+});
 
 module.exports = router;
-diff --git a/backend/server.js b/backend/server.js
-index 0a0b1c2..3d4e5f6 100644
-++ b/backend/server.js
-@@ -1,5 +1,6 @@
+diff --git a/backend/routes/index.js b/backend/routes/index.js
+index 3f4b2c1..e6d8a9b 100644
+++ b/backend/routes/index.js
+@@ -1,5 +1,7 @@
  const express = require('express');
-const restaurantRoutes = require('./routes/restaurantRoutes');
+ const router = express.Router();
+const restaurantRoutes = require('../controllers/restaurantController');
  
- const app = express();
- const port = process.env.PORT || 3000;
-@@ -8,4 +9,5 @@ app.use(express.json());
+ // Include routes for users
+ router.use('/users', require('./userRoutes'));
+@@ -8,3 +10,5 @@ router.use('/users', require('./userRoutes'));
  
- app.get('/', (req, res) => {
-   res.send('Hello World!');
- });
-
-app.use('/api', restaurantRoutes);
+ // Include routes for restaurants
+router.use('/restaurants', restaurantRoutes);
  
- app.listen(port, () => {
-   console.log(`Server is running on port ${port}`);
-diff --git a/frontend/src/App.css b/frontend/src/App.css
-index 0a1b2c3..4d5e6f7 100644
-++ b/frontend/src/App.css
-@@ -1,3 +1,8 @@
- body {
-   font-family: Arial, sans-serif;
-  background-color: #ffffff; /* Change to dark mode color */
-  color: #000000; /* Change to dark mode color */
- }
- 
- .App {
-diff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js
-index 0a1b2c3..4d5e6f7 100644
-++ b/frontend/src/components/RegistrationForm.js
-@@ -1,3 +1,8 @@
- import React from 'react';
- 
- const RegistrationForm = () => {
-  // Add dark mode toggle functionality here
-
-   return (
-     <div>
-       <h2>Register</h2>
-diff --git a/package.json b/package.json
-index 0a1b2c3..4d5e6f7 100644
-++ b/package.json
-@@ -1,9 +1,10 @@
- {
-   "name": "restaurant-finder",
-   "version": "1.0.0",
-   "description": "",
-   "main": "index.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-   "keywords": [],
-   "author": "",
-   "license": "ISC",
-@@ -12,6 +13,7 @@
+ module.exports = router;
+diff --git a/backend/package.json b/backend/package.json
+index 6f7b9c2..e4d8a9b 100644
+++ b/backend/package.json
+@@ -30,6 +30,7 @@
+   "dependencies": {
+     "bcryptjs": "^2.4.3",
+     "cors": "^2.8.5",
+    "axios": "^0.21.1",
+     "dotenv": "^10.0.0",
      "express": "^4.17.1",
-     "mongoose": "^5.10.13",
-     "axios": "^0.21.1"
-  },
-   "devDependencies": {}
- }
+     "mongoose": "^5.12.6"

@@ -50,3 +50,11 @@ Goal: run the project
 - [2026-07-24 22:50:09] 📝 **Code Applied**: Modified 1 files for Task #4
 - [2026-07-24 22:50:09] ✅ **Completed Task #4 (code)**: Update Restaurant Controller
 - [2026-07-24 22:50:09] 🚀 **Started Task #5 (code)**: Update User Controller
+- [2026-07-24 22:50:14] 📝 **Code Applied**: Modified 1 files for Task #5
+- [2026-07-24 22:50:14] ✅ **Completed Task #5 (code)**: Update User Controller
+- [2026-07-24 22:50:14] 🚀 **Started Task #6 (test)**: Run Unit Tests
+- [2026-07-24 22:50:14] ✅ **Completed Task #6 (test)**: Run Unit Tests
+- [2026-07-24 22:50:16] 🚀 **Started Task #7 (review)**: Code Review
+- [2026-07-24 22:50:25] 🔍 **Code Review**: Needs Revision for Task #7
+- [2026-07-24 22:50:25] ✅ **Completed Task #7 (review)**: Code Review
+- [2026-07-24 22:50:25] 🚀 **Started Task #8 (commit)**: Commit Changes

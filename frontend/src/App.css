@@ -1,0 +1,79 @@
+.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode .navbar {
+  background-color: #444;
+}
+
+.dark-mode .button {
+  background-color: #555;
+  border-color: #666;
+}
+
+.dark-mode .input {
+  background-color: #444;
+  color: #fff;
+  border-color: #666;
+}
+diff --git a/frontend/src/App.js b/frontend/src/App.js
+++ b/frontend/src/App.js
+@@ -1,5 +1,7 @@
+ import React from 'react';
+ import './App.css';
+import RegistrationForm from './components/RegistrationForm';
+ 
+ function App() {
+   return (
+     <div className="App">
+       <header className="App-header">
+         <p>
+           Edit <code>src/App.js</code> and save to reload.
+         </p>
+@@ -12,6 +14,8 @@
+       </header>
+       <main>
+         <h1>Welcome to Our App</h1>
+        <RegistrationForm />
+       </main>
+     </div>
+   );
+ }
+ 
+ export default App;
+diff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js
+++ b/frontend/src/components/RegistrationForm.js
+@@ -1,5 +1,7 @@
+ import React from 'react';
+import './App.css';
+ 
+ function RegistrationForm() {
+   return (
+     <form>
+       <label htmlFor="username">Username:</label>
+       <input type="text" id="username" name="username" />
+       <br />
+       <label htmlFor="email">Email:</label>
+       <input type="email" id="email" name="email" />
+       <br />
+       <button type="submit">Register</button>
+     </form>
+   );
+ }
+ 
+ export default RegistrationForm;
+diff --git a/frontend/src/index.js b/frontend/src/index.js
+++ b/frontend/src/index.js
+@@ -1,5 +1,7 @@
+ import React from 'react';
+ import ReactDOM from 'react-dom';
+import './App.css';
+ import App from './App';
+ 
+ ReactDOM.render(
+   <React.StrictMode>
+     <App />
+   </React.StrictMode>,
+   document.getElementById('root')
+ );

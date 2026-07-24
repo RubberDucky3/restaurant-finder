@@ -1,127 +1,78 @@
- import React, { useState } from 'react';
- 
- const RegistrationForm = () => {
-   const [formData, setFormData] = useState({
-     username: '',
-     email: '',
-     password: ''
-   });
- 
-  const [restaurants, setRestaurants] = useState([]);
-  const [cuisineFilter, setCuisineFilter] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+import React, { useState } from 'react';
 
-  const fetchRestaurants = async () => {
+const RegistrationForm = () => {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const response = await fetch('/api/restaurants');
-      const data = await response.json();
-      setRestaurants(data);
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+      if (response.ok) {
+        alert('Registration successful!');
+      } else {
+        alert('Registration failed. Please try again.');
+      }
     } catch (error) {
-      console.error('Error fetching restaurants:', error);
+      console.error('Error registering:', error);
+      alert('An error occurred. Please try again later.');
     }
   };
 
-  const handleFilterChange = (event) => {
-    setCuisineFilter(event.target.value);
-  };
-
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
-
-   const handleChange = (event) => {
-     setFormData({
-       ...formData,
-       [event.target.name]: event.target.value
-     });
-   };
- 
-   const handleSubmit = async (event) => {
-     event.preventDefault();
-     try {
-       const response = await fetch('/api/users', {
-         method: 'POST',
-         headers: {
-           'Content-Type': 'application/json'
-         },
-         body: JSON.stringify(formData)
-       });
-       if (response.ok) {
-         alert('Registration successful!');
-       } else {
-         alert('Registration failed.');
-       }
-     } catch (error) {
-       console.error('Error registering user:', error);
-     }
-   };
- 
-  React.useEffect(() => {
-    fetchRestaurants();
-  }, []);
-
-  const filteredRestaurants = restaurants.filter((restaurant) =>
-    restaurant.cuisine.toLowerCase().includes(cuisineFilter.toLowerCase()) &&
-    restaurant.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-   return (
-     <div>
-       <h2>Registration Form</h2>
-       <form onSubmit={handleSubmit}>
-         <label htmlFor="username">Username:</label>
-         <input
-           type="text"
-           id="username"
-           name="username"
-           value={formData.username}
-           onChange={handleChange}
-         />
-         <br />
-         <label htmlFor="email">Email:</label>
-         <input
-           type="email"
-           id="email"
-           name="email"
-           value={formData.email}
-           onChange={handleChange}
-         />
-         <br />
-         <label htmlFor="password">Password:</label>
-         <input
-           type="password"
-           id="password"
-           name="password"
-           value={formData.password}
-           onChange={handleChange}
-         />
-         <br />
-         <button type="submit">Register</button>
-       </form>
-      <h2>Restaurant List</h2>
+  return (
+    <form onSubmit={handleSubmit}>
       <div>
+        <label htmlFor="username">Username:</label>
         <input
           type="text"
-          placeholder="Filter by cuisine"
-          value={cuisineFilter}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="text"
-          placeholder="Search restaurants"
-          value={searchQuery}
-          onChange={handleSearchChange}
+          id="username"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          required
         />
       </div>
-      <ul>
-        {filteredRestaurants.map((restaurant) => (
-          <li key={restaurant.id}>
-            {restaurant.name} - {restaurant.cuisine}
-          </li>
-        ))}
-      </ul>
-     </div>
-   );
- };
- 
- export default RegistrationForm;
+      <div>
+        <label htmlFor="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <button type="submit">Register</button>
+    </form>
+  );
+};
+
+export default RegistrationForm;

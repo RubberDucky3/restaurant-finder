@@ -1,4 +1,5 @@
 const Restaurant = require('../models/restaurant');
+const fetch = require('node-fetch');
 
 exports.createRestaurant = async (req, res) => {
   try {

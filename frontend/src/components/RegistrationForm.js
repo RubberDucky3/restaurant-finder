@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import MapComponent from '../components/MapComponent';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({

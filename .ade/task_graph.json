@@ -3,7 +3,7 @@
   "goal": "ok add dark mode, real google maps integration and global restaurant access, use public data or a free API if needed",
   "plan_id": "ba86918e-6984-44e0-af2c-1ddd37b56b19",
   "status": "ready",
-  "loop_count": 0,
+  "loop_count": 1,
   "tasks": [
     {
       "seq": 0,
@@ -153,20 +153,164 @@
       "seq": 8,
       "kind": "commit",
       "title": "Commit Changes",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         7
       ],
-      "result": null,
+      "result": {
+        "commit_sha": "2ee3b8f8511b",
+        "branch": "main",
+        "message": "Commit Changes\n\nCommit all changes to the version control system with appropriate commit messages detailing the changes made."
+      },
       "error": null
     },
     {
       "seq": 9,
       "kind": "deploy",
       "title": "Deploy to Production",
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         8
+      ],
+      "result": {
+        "deployed": true,
+        "repo_url": "https://github.com/RubberDucky3/restaurant-finder",
+        "pages_url": "https://RubberDucky3.github.io/restaurant-finder/",
+        "is_live": true
+      },
+      "error": null
+    },
+    {
+      "seq": 10,
+      "kind": "code",
+      "title": "Refactor backend models for global restaurants",
+      "status": "running",
+      "depends_on": [],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 11,
+      "kind": "code",
+      "title": "Implement dark mode conditionally based on user preference or system settings",
+      "status": "pending",
+      "depends_on": [
+        10
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 12,
+      "kind": "code",
+      "title": "Refactor backend controllers and models for restaurant operations",
+      "status": "pending",
+      "depends_on": [
+        10
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 13,
+      "kind": "code",
+      "title": "Secure Google Maps API key management",
+      "status": "pending",
+      "depends_on": [
+        10
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 14,
+      "kind": "code",
+      "title": "Refactor frontend components for registration form",
+      "status": "pending",
+      "depends_on": [
+        10
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 15,
+      "kind": "code",
+      "title": "Integrate Google Maps in frontend",
+      "status": "pending",
+      "depends_on": [
+        13
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 16,
+      "kind": "code",
+      "title": "Refactor backend package.json for dependencies",
+      "status": "pending",
+      "depends_on": [
+        10
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 17,
+      "kind": "code",
+      "title": "Refactor frontend package.json for dependencies",
+      "status": "pending",
+      "depends_on": [
+        10
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 18,
+      "kind": "test",
+      "title": "Run backend unit tests",
+      "status": "pending",
+      "depends_on": [
+        10,
+        12
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 19,
+      "kind": "test",
+      "title": "Run frontend integration tests",
+      "status": "pending",
+      "depends_on": [
+        11,
+        13,
+        15
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 20,
+      "kind": "review",
+      "title": "Code review for backend changes",
+      "status": "pending",
+      "depends_on": [
+        16,
+        18
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 21,
+      "kind": "review",
+      "title": "Code review for frontend changes",
+      "status": "pending",
+      "depends_on": [
+        17,
+        19
       ],
       "result": null,
       "error": null

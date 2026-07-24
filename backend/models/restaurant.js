@@ -1,106 +1,80 @@
 const mongoose = require('mongoose');
 
 const restaurantSchema = new mongoose.Schema({
-const restaurantSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true
   },
-  address: {
-    type: String,
-    required: true
+  location: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
   },
-  cuisineType: {
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
-
-class Restaurant extends Model {}
-
-Restaurant.init({
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  address: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  cuisine: {
-    type: DataTypes.STRING,
-    allowNull: false
+  globalAccess: {
+    type: Boolean,
+    default: false
   }
-}, {
-  sequelize,
-  modelName: 'restaurant'
 });
+
+const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
 module.exports = Restaurant;
-diff --git a/backend/models/user.js b/backend/models/user.js
-new file mode 100644
-index 0000000..e4b9c8d
-++ b/backend/models/user.js
-@@ -0,0 +1,23 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+diff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js
+++ b/backend/controllers/restaurantController.js
+@@ -0,0 +1,25 @@
+const Restaurant = require('../models/restaurant');
 
-class User extends Model {}
-
-User.init({
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false
+exports.addRestaurantToFavorites = async (req, res) => {
+  try {
+    const restaurant = await Restaurant.findById(req.params.id);
+    if (!restaurant) {
+      return res.status(404).json({ message: 'Restaurant not found' });
+    }
+    req.user.favorites.push(restaurant._id);
+    await req.user.save();
+    res.json({ message: 'Restaurant added to favorites' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-}, {
-  sequelize,
-  modelName: 'user'
-});
+};
 
-module.exports = User;
-diff --git a/backend/config/database.js b/backend/config/database.js
-new file mode 100644
-index 0000000..e4b9c8d
-++ b/backend/config/database.js
-@@ -0,0 +1,12 @@
-const { Sequelize } = require('sequelize');
-
-const sequelize = new Sequelize('database', 'username', 'password', {
-  host: 'localhost',
-  dialect: 'mysql'
-});
-
-module.exports = sequelize;
-diff --git a/backend/index.js b/backend/index.js
-new file mode 100644
-index 0000000..e4b9c8d
-++ b/backend/index.js
-@@ -0,0 +1,7 @@
-const express = require('express');
-const sequelize = require('./config/database');
-
-const app = express();
-
-sequelize.sync().then(() => {
-  console.log('Database & tables created!');
-}).catch((error) => {
-  console.error('Error creating database & tables:', error);
-});
-diff --git a/backend/package.json b/backend/package.json
-index e6b9c8d..e4b9c8d 100644
-++ b/backend/package.json
-@@ -1,5 +1,7 @@
- {
-   "name": "restaurant-finder",
-   "version": "1.0.0",
-  "dependencies": {
-    "express": "^4.17.1",
-    "sequelize": "^6.3.5"
+exports.getGlobalRestaurants = async (req, res) => {
+  try {
+    const restaurants = await Restaurant.find({ globalAccess: true });
+    res.json(restaurants);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
- }
+};
+diff --git a/backend/controllers/userController.js b/backend/controllers/userController.js
+++ b/backend/controllers/userController.js
+@@ -1,6 +1,7 @@
+ const User = require('../models/user');
+ const bcrypt = require('bcryptjs');
+const Restaurant = require('../models/restaurant');
+ 
+ exports.registerUser = async (req, res) => {
+   try {
+@@ -29,3 +30,14 @@ exports.loginUser = async (req, res) => {
+     res.json({ message: 'Invalid credentials' });
+   }
+ };
+
+exports.addRestaurantToFavorites = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    await Restaurant.findByIdAndUpdate(req.params.restaurantId, { $addToSet: { users: req.user._id } });
+    res.json({ message: 'Restaurant added to favorites' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+ };

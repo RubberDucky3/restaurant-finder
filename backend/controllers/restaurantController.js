@@ -1,53 +1,89 @@
- const express = require('express');
+const axios = require('axios');
+
+exports.getRestaurants = async (req, res) => {
+  try {
+    const response = await axios.get('https://api.example.com/restaurants', {
+      headers: {
+        'Authorization': `Bearer ${process.env.API_KEY}`
+      }
+    });
+    res.json(response.data);
+  } catch (error) {
+    if (error.response) {
+      res.status(error.response.status).json(error.response.data);
+    } else {
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  }
+};
+
+exports.rateLimitMiddleware = (req, res, next) => {
+  // Implement rate limiting logic here
+  // For example, using a library like express-rate-limit
+  next();
+};
+diff --git a/backend/routes/restaurantRoutes.js b/backend/routes/restaurantRoutes.js
+new file mode 100644
+++ b/backend/routes/restaurantRoutes.js
+@@ -0,0 +1,7 @@
+const express = require('express');
 const router = express.Router();
+const restaurantController = require('../controllers/restaurantController');
 
-// Import the Restaurant model
-const Restaurant = require('../models/restaurant');
-const dotenv = require('dotenv');
+router.get('/', restaurantController.rateLimitMiddleware, restaurantController.getRestaurants);
 
-// Create a new restaurant
-router.post('/', async (req, res) => {
-  try {
-    const restaurant = new Restaurant(req.body);
-    await restaurant.save();
-    res.status(201).json(restaurant);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+module.exports = router;
+diff --git a/backend/package.json b/backend/package.json
+index 1234567..89abcde 100644
+++ b/backend/package.json
+@@ -10,6 +10,7 @@
+   "dependencies": {
+     "express": "^4.17.1",
+    "axios": "^0.21.1"
+   },
+   "devDependencies": {}
+ }
+diff --git a/frontend/src/App.css b/frontend/src/App.css
+index 1234567..89abcde 100644
+++ b/frontend/src/App.css
+@@ -1,3 +1,6 @@
+ body {
+   font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+ }
+ 
+ .header {
+diff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js
+index 1234567..89abcde 100644
+++ b/frontend/src/components/RegistrationForm.js
+@@ -1,3 +1,6 @@
+ import React from 'react';
+ 
+import './dark-mode.css';
 
-// Get all restaurants
-router.get('/', async (req, res) => {
-  try {
-    const restaurants = await Restaurant.find();
-    res.json(restaurants);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+ const RegistrationForm = () => {
+   return (
+     <div className="registration-form">
+diff --git a/frontend/src/App.css b/frontend/src/dark-mode.css
+new file mode 100644
+++ b/frontend/src/dark-mode.css
+@@ -0,0 +1,6 @@
+body {
+  background-color: #333;
+  color: #fff;
+}
 
- module.exports = router;
-diff --git a/backend/models/restaurant.js b/backend/models/restaurant.js
-index 1a2b3c4..5d6e7f8 100644
-++ b/backend/models/restaurant.js
-@@ -1,6 +1,23 @@
- const mongoose = require('mongoose');
-
-const restaurantSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  address: {
-    type: String,
-    required: true
-  },
-  cuisine: {
-    type: String,
-    required: true
-  }
-});
-
- const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-
- module.exports = Restaurant;
+.header {
+  background-color: #555;
+}
+diff --git a/frontend/package.json b/frontend/package.json
+index 1234567..89abcde 100644
+++ b/frontend/package.json
+@@ -10,6 +10,7 @@
+   "dependencies": {
+     "react": "^17.0.2",
+    "react-google-maps": "^2.13.0"
+   },
+   "devDependencies": {}
+ }

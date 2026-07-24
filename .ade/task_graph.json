@@ -773,18 +773,22 @@
       "seq": 44,
       "kind": "commit",
       "title": "Commit the updated package.json files",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         43
       ],
-      "result": null,
+      "result": {
+        "commit_sha": "fabf296b51ba",
+        "branch": "main",
+        "message": "Commit the updated package.json files\n\nStage and commit the changes to `backend/package.json` and `frontend/package.json`, providing a clear commit message that describes the changes made."
+      },
       "error": null
     },
     {
       "seq": 45,
       "kind": "deploy",
       "title": "Deploy the updated project",
-      "status": "pending",
+      "status": "running",
       "depends_on": [
         44
       ],

@@ -37,18 +37,32 @@
       "seq": 2,
       "kind": "code",
       "title": "Integrate Google Maps",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         1
       ],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/backend/.env b/backend/.env\nnew file mode 100644\n--- /dev/null\n+++ b/backend/.env\n@@ -0,0 +1 @@\n+GOOGLE_MAPS_API_KEY=your_google_maps_api_key_here\n\ndiff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\nindex 3a2b3c4..5d6e7f8 100644\n--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -1,3 +1,4 @@\n const Restaurant = require('../models/restaurant');\n+const fetch = require('node-fetch');\n\n exports.getRestaurants = async (req, res) => {\n   try {\ndiff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nindex 9a8b7c6..d5e4f32 100644\n--- a/backend/models/restaurant.js\n+++ b/backend/models/restaurant.js\n@@ -1,3 +1,4 @@\n const mongoose = require('mongoose');\n\n+const restaurantSchema = new mongoose.Schema({\n   name: String,\n   address: String,\n   cuisine: String,\ndiff --git a/frontend/src/App.css b/frontend/src/App.css\nindex 1a2b3c4..5d6e7f8 100644\n--- a/frontend/src/App.css\n+++ b/frontend/src/App.css\n@@ -1,3 +1,4 @@\n body {\n   font-family: Arial, sans-serif;\n+  background-color: #333;\n   color: #fff;\n }\ndiff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js\nindex 5a6b7c8..9d0e1f2 100644\n--- a/frontend/src/components/RegistrationForm.js\n+++ b/frontend/src/components/RegistrationForm.js\n@@ -1,3 +1,4 @@\n import React from 'react';\n+import MapComponent from '../components/MapComponent';\n\n const RegistrationForm = () => {\n   return (\n     <div>\n       <h2>Register</h2>\n+      <MapComponent />\n     </div>\n   );\n };\n\n export default RegistrationForm;\ndiff --git a/frontend/src/components/MapComponent.js b/frontend/src/components/MapComponent.js\nnew file mode 100644\n--- /dev/null\n+++ b/frontend/src/components/MapComponent.js\n@@ -0,0 +1,27 @@\n+import React, { useEffect, useState } from 'react';\n+import axios from 'axios';\n\n+const MapComponent = () => {\n+  const [restaurants, setRestaurants] = useState([]);\n\n+  useEffect(() => {\n+    const fetchRestaurants = async () => {\n+      try {\n+        const response = await axios.get('http://localhost:5000/api/restaurants');\n+        setRestaurants(response.data);\n+      } catch (error) {\n+        console.error('Error fetching restaurants:', error);\n+      }\n+    };\n\n+    fetchRestaurants();\n+  }, []);\n\n+  return (\n+    <div id=\"map\" style={{ width: '100%', height: '500px' }}></div>\n+  );\n+};\n\n+export default MapComponent;",
+        "files_changed": [
+          "backend/.env",
+          "backend/controllers/restaurantController.js",
+          "backend/controllers/restaurantController.js.orig",
+          "backend/models/restaurant.js",
+          "frontend/src/App.css",
+          "frontend/src/components/RegistrationForm.js",
+          "frontend/src/components/RegistrationForm.js.orig",
+          "frontend/src/App.css.orig"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 3,
       "kind": "code",
       "title": "Fetch Public Restaurant Data",
-      "status": "pending",
+      "status": "running",
       "depends_on": [
         2
       ],

@@ -1,0 +1,9 @@
+--- frontend/src/components/RegistrationForm.js
++++ frontend/src/components/RegistrationForm.js
+@@ -1,5 +1,6 @@
+ import React, { useState } from 'react';
+ 
+ const RegistrationForm = () => {
++  const [restaurantDetails, setRestaurantDetails] = useState(null);
+ 
+   const handleSubmit = (event) => {

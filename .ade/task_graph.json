@@ -1,9 +1,9 @@
 {
   "project": "Restaurant Finder",
-  "goal": "make sure to store all restaurants in a structured database to pull from in the frontend, make sure the API is robust in fetching data as needed",
-  "plan_id": "9a7017af-0130-47cf-98f8-4c3fb60beae1",
+  "goal": "Add real venue phone numbers and OpenStreetMap coordinates",
+  "plan_id": "72f5718a-9db9-451e-b4db-e680ed74d6af",
   "status": "ready",
-  "loop_count": 1,
+  "loop_count": 0,
   "tasks": [
     {
       "seq": 0,
@@ -12,7 +12,7 @@
       "status": "done",
       "depends_on": [],
       "result": {
-        "summary": "Implement a structured database for storing restaurants and create an API endpoint to fetch restaurant data.",
+        "summary": "Add real venue phone numbers and OpenStreetMap coordinates to the application.",
         "task_count": 12
       },
       "error": null
@@ -20,138 +20,37 @@
     {
       "seq": 1,
       "kind": "retrieve",
-      "title": "Review existing codebase",
+      "title": "Identify venues with missing phone numbers and coordinates",
       "status": "done",
       "depends_on": [],
       "result": {
         "queries": [
-          "backend",
-          "models",
-          "controllers",
-          "data handling",
-          "database"
+          "phone numbers",
+          "OpenStreetMap coordinates"
         ],
         "excerpts": [
           {
             "file": "brain.md",
-            "start_line": 70,
-            "end_line": 76,
-            "content": "- [2026-07-24 22:51:20] \ud83d\ude80 **Started Task #11 (code)**: Implement dark mode conditionally based on user preference or system settings\n- [2026-07-24 22:51:27] \ud83d\udcdd **Code Applied**: Modified 2 files for Task #11\n- [2026-07-24 22:51:27] \u2705 **Completed Task #11 (code)**: Implement dark mode conditionally based on user preference or system settings\n- [2026-07-24 22:51:27] \ud83d\ude80 **Started Task #12 (code)**: Refactor backend controllers and models for restaurant operations\n- [2026-07-24 22:52:08] \ud83d\udcdd **Code Applied**: Modified 1 files for Task #12\n- [2026-07-24 22:52:08] \u2705 **Completed Task #12 (code)**: Refactor backend controllers and models for restaurant operations\n- [2026-07-24 22:52:08] \ud83d\ude80 **Started Task #13 (code)**: Secure Google Maps API key management",
-            "score": 3
-          },
-          {
-            "file": "brain.md",
-            "start_line": 72,
-            "end_line": 78,
-            "content": "- [2026-07-24 22:51:27] \u2705 **Completed Task #11 (code)**: Implement dark mode conditionally based on user preference or system settings\n- [2026-07-24 22:51:27] \ud83d\ude80 **Started Task #12 (code)**: Refactor backend controllers and models for restaurant operations\n- [2026-07-24 22:52:08] \ud83d\udcdd **Code Applied**: Modified 1 files for Task #12\n- [2026-07-24 22:52:08] \u2705 **Completed Task #12 (code)**: Refactor backend controllers and models for restaurant operations\n- [2026-07-24 22:52:08] \ud83d\ude80 **Started Task #13 (code)**: Secure Google Maps API key management\n- [2026-07-24 22:52:43] \ud83d\udcdd **Code Applied**: Modified 7 files for Task #13\n- [2026-07-24 22:52:43] \u2705 **Completed Task #13 (code)**: Secure Google Maps API key management",
-            "score": 3
-          },
-          {
-            "file": "backend/controllers/restaurantController.js",
-            "start_line": 31,
-            "end_line": 37,
-            "content": "        res.status(400).json({ message: error.message });\n    }\n};\ndiff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nnew file mode 100644\n++ b/backend/models/restaurant.js\n@@ -0,0 +1,23 @@",
-            "score": 2
-          },
-          {
-            "file": "backend/controllers/restaurantController.js",
-            "start_line": 33,
-            "end_line": 39,
-            "content": "};\ndiff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nnew file mode 100644\n++ b/backend/models/restaurant.js\n@@ -0,0 +1,23 @@\nconst mongoose = require('mongoose');\n",
-            "score": 2
-          },
-          {
-            "file": "backend/controllers/restaurantController.js.orig",
-            "start_line": 31,
-            "end_line": 37,
-            "content": "        res.status(400).json({ message: error.message });\n    }\n};\ndiff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nnew file mode 100644\n++ b/backend/models/restaurant.js\n@@ -0,0 +1,23 @@",
-            "score": 2
-          },
-          {
-            "file": "backend/controllers/restaurantController.js.orig",
-            "start_line": 33,
-            "end_line": 39,
-            "content": "};\ndiff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nnew file mode 100644\n++ b/backend/models/restaurant.js\n@@ -0,0 +1,23 @@\nconst mongoose = require('mongoose');\n",
-            "score": 2
-          },
-          {
-            "file": "backend/controllers/restaurantController.js.rej",
-            "start_line": 1,
-            "end_line": 4,
-            "content": "--- backend/controllers/restaurantController.js\n+++ backend/controllers/restaurantController.js\n@@ -1,6 +1,7 @@\n const express = require('express');",
-            "score": 2
-          },
-          {
-            "file": "backend/controllers/restaurantController.js.rej",
-            "start_line": 1,
-            "end_line": 5,
-            "content": "--- backend/controllers/restaurantController.js\n+++ backend/controllers/restaurantController.js\n@@ -1,6 +1,7 @@\n const express = require('express');\n const router = express.Router();",
-            "score": 2
-          },
-          {
-            "file": "backend/controllers/userController.js.rej",
-            "start_line": 1,
-            "end_line": 4,
-            "content": "--- backend/controllers/userController.js\n+++ backend/controllers/userController.js\n@@ -1,6 +1,7 @@\n const express = require('express');",
-            "score": 2
-          },
-          {
-            "file": "backend/controllers/userController.js.rej",
-            "start_line": 1,
-            "end_line": 5,
-            "content": "--- backend/controllers/userController.js\n+++ backend/controllers/userController.js\n@@ -1,6 +1,7 @@\n const express = require('express');\n const router = express.Router();",
-            "score": 2
-          },
-          {
-            "file": "backend/models/restaurant.js",
-            "start_line": 25,
-            "end_line": 31,
-            "content": "const Restaurant = mongoose.model('Restaurant', restaurantSchema);\n\nmodule.exports = Restaurant;\ndiff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\n++ b/backend/controllers/restaurantController.js\n@@ -0,0 +1,25 @@\nconst Restaurant = require('../models/restaurant');",
-            "score": 2
-          },
-          {
-            "file": "backend/models/restaurant.js",
-            "start_line": 26,
-            "end_line": 32,
-            "content": "\nmodule.exports = Restaurant;\ndiff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\n++ b/backend/controllers/restaurantController.js\n@@ -0,0 +1,25 @@\nconst Restaurant = require('../models/restaurant');\n",
-            "score": 2
-          },
-          {
-            "file": "backend/models/restaurant.js",
-            "start_line": 52,
-            "end_line": 58,
-            "content": "    res.status(500).json({ message: error.message });\n  }\n};\ndiff --git a/backend/controllers/userController.js b/backend/controllers/userController.js\n++ b/backend/controllers/userController.js\n@@ -1,6 +1,7 @@\n const User = require('../models/user');",
-            "score": 2
-          },
-          {
-            "file": "backend/models/restaurant.js",
-            "start_line": 53,
-            "end_line": 59,
-            "content": "  }\n};\ndiff --git a/backend/controllers/userController.js b/backend/controllers/userController.js\n++ b/backend/controllers/userController.js\n@@ -1,6 +1,7 @@\n const User = require('../models/user');\n const bcrypt = require('bcryptjs');",
-            "score": 2
-          },
-          {
-            "file": "backend/models/restaurant.js.orig",
-            "start_line": 25,
-            "end_line": 31,
-            "content": "const Restaurant = mongoose.model('Restaurant', restaurantSchema);\n\nmodule.exports = Restaurant;\ndiff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\n++ b/backend/controllers/restaurantController.js\n@@ -0,0 +1,25 @@\nconst Restaurant = require('../models/restaurant');",
-            "score": 2
+            "start_line": 64,
+            "end_line": 67,
+            "content": "- [2026-07-24 23:00:24] \ud83d\ude80 **Started Task #10 (review)**: Code review by team members\n- [2026-07-24 23:00:34] \ud83d\udd0d **Code Review**: Needs Revision for Task #10\n- [2026-07-24 23:00:34] \u2705 **Completed Task #10 (review)**: Code review by team members\n- [2026-07-24 23:00:34] \ud83d\ude80 **Started Task #1 (retrieve)**: Identify venues with missing phone numbers and coordinates",
+            "score": 1
           }
         ],
-        "count": 15
+        "count": 1
       },
       "error": null
     },
     {
       "seq": 2,
       "kind": "code",
-      "title": "Define restaurant model in MongoDB",
+      "title": "Update restaurant model to include phone number and coordinates",
       "status": "done",
       "depends_on": [
         1
       ],
       "result": {
-        "patch": "diff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nnew file mode 100644\n--- /dev/null\n+++ b/backend/models/restaurant.js\n@@ -0,0 +1,23 @@\n+const mongoose = require('mongoose');\n+\n+const restaurantSchema = new mongoose.Schema({\n+    name: {\n+        type: String,\n+        required: true\n+    },\n+    address: {\n+        type: String,\n+        required: true\n+    },\n+    cuisine: {\n+        type: String,\n+        required: true\n+    },\n+    rating: {\n+        type: Number,\n+        default: 0\n+    }\n+});\n+\n+const Restaurant = mongoose.model('Restaurant', restaurantSchema);\n+\n+module.exports = Restaurant;",
+        "patch": "diff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nindex 1a2b3c4..5d6e7f8 100644\n--- a/backend/models/restaurant.js\n+++ b/backend/models/restaurant.js\n@@ -10,6 +10,8 @@ const restaurantSchema = new mongoose.Schema({\n     name: {\n         type: String,\n         required: true\n+    },\n+    phoneNumber: {\n+        type: String,\n+        required: true\n     },\n     address: {\n         type: String,\n@@ -20,6 +24,8 @@ const restaurantSchema = new mongoose.Schema({\n     city: {\n         type: String,\n         required: true\n+    },\n+    coordinates: {\n+        type: [Number],\n+        required: true,\n+        validate: {\n+            validator: (v) => v.length === 2 && typeof v[0] === 'number' && typeof v[1] === 'number',\n+            message: 'Coordinates must be an array of two numbers'\n+        }\n     },\n     cuisine: {\n         type: String,",
         "files_changed": [
           "backend/models/restaurant.js"
         ],
@@ -163,13 +62,13 @@
     {
       "seq": 3,
       "kind": "code",
-      "title": "Define user model in MongoDB",
+      "title": "Update user model to include phone number and coordinates",
       "status": "done",
       "depends_on": [
         1
       ],
       "result": {
-        "patch": "diff --git a/backend/models/user.js b/backend/models/user.js\nnew file mode 100644\n--- /dev/null\n+++ b/backend/models/user.js\n@@ -0,0 +1,23 @@\n+const mongoose = require('mongoose');\n+\n+const userSchema = new mongoose.Schema({\n+    username: {\n+        type: String,\n+        required: true,\n+        unique: true\n+    },\n+    email: {\n+        type: String,\n+        required: true,\n+        unique: true\n+    },\n+    password: {\n+        type: String,\n+        required: true\n+    }\n+});\n+\n+const User = mongoose.model('User', userSchema);\n+\n+module.exports = User;",
+        "patch": "diff --git a/backend/models/user.js b/backend/models/user.js\nindex 1a2b3c4..5d6e7f8 100644\n--- a/backend/models/user.js\n+++ b/backend/models/user.js\n@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({\n   email: {\n     type: String,\n     required: true,\n+    unique: true,\n     validate: {\n       validator: (value) => isEmail(value),\n       message: 'Invalid email format',\n@@",
         "files_changed": [
           "backend/models/user.js"
         ],
@@ -181,13 +80,13 @@
     {
       "seq": 4,
       "kind": "code",
-      "title": "Implement restaurant controller methods",
+      "title": "Update restaurant controller to handle phone number and coordinates",
       "status": "done",
       "depends_on": [
         2
       ],
       "result": {
-        "patch": "diff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\nindex 3a4b5c6..7d8e9f0 100644\n--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -1,6 +1,25 @@\n const express = require('express');\n+const router = express.Router();\n+\n+// Import the Restaurant model\n+const Restaurant = require('../models/restaurant');\n+\n+// Create a new restaurant\n+router.post('/', async (req, res) => {\n+  try {\n+    const restaurant = new Restaurant(req.body);\n+    await restaurant.save();\n+    res.status(201).json(restaurant);\n+  } catch (error) {\n+    res.status(400).json({ message: error.message });\n+  }\n+});\n+\n+// Get all restaurants\n+router.get('/', async (req, res) => {\n+  try {\n+    const restaurants = await Restaurant.find();\n+    res.json(restaurants);\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n+  }\n+});\n+\n module.exports = router;\ndiff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nindex 1a2b3c4..5d6e7f8 100644\n--- a/backend/models/restaurant.js\n+++ b/backend/models/restaurant.js\n@@ -1,6 +1,23 @@\n const mongoose = require('mongoose');\n\n+const restaurantSchema = new mongoose.Schema({\n+  name: {\n+    type: String,\n+    required: true\n+  },\n+  address: {\n+    type: String,\n+    required: true\n+  },\n+  cuisine: {\n+    type: String,\n+    required: true\n+  }\n+});\n+\n const Restaurant = mongoose.model('Restaurant', restaurantSchema);\n\n module.exports = Restaurant;",
+        "patch": "--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -1,5 +1,7 @@\n const Restaurant = require('../models/restaurant');\n \n+const geolib = require('geolib');\n+\n // Create a new restaurant\n exports.createRestaurant = async (req, res) => {\n     try {\n@@ -20,6 +22,8 @@ exports.createRestaurant = async (req, res) => {\n         const { name, address, cuisine, phoneNumber, coordinates } = req.body;\n \n         const newRestaurant = new Restaurant({\n+            phoneNumber,\n+            coordinates: geolib.parseCoordinates(coordinates),\n             name,\n             address,\n             cuisine\n@@ -40,6 +44,8 @@ exports.updateRestaurant = async (req, res) => {\n     try {\n         const { id } = req.params;\n         const { name, address, cuisine, phoneNumber, coordinates } = req.body;\n+        const parsedCoordinates = geolib.parseCoordinates(coordinates);\n \n         const updatedRestaurant = await Restaurant.findByIdAndUpdate(id, {\n             name,\n@@ -50,6 +56,7 @@ exports.updateRestaurant = async (req, res) => {\n             cuisine,\n             phoneNumber,\n             coordinates: parsedCoordinates\n+        }, { new: true });\n \n         if (!updatedRestaurant) {\n             return res.status(404).json({ message: 'Restaurant not found' });\n@@ -65,6 +72,8 @@ exports.getRestaurantById = async (req, res) => {\n     try {\n         const { id } = req.params;\n \n+        const restaurant = await Restaurant.findById(id);\n+\n         if (!restaurant) {\n             return res.status(404).json({ message: 'Restaurant not found' });\n         }\n@@ -80,6 +89,7 @@ exports.getAllRestaurants = async (req, res) => {\n     try {\n         const restaurants = await Restaurant.find();\n \n+        const parsedRestaurants = restaurants.map(restaurant => ({\n             ...restaurant.toObject(),\n-            coordinates: geolib.formatCoordinates(restaurant.coordinates)\n+            coordinates: geolib.formatCoordinates(restaurant.coordinates),\n+            phoneNumber: restaurant.phoneNumber\n         }));\n \n         res.json(parsedRestaurants);",
         "files_changed": [
           "backend/controllers/restaurantController.js"
         ],
@@ -199,13 +98,13 @@
     {
       "seq": 5,
       "kind": "code",
-      "title": "Implement user controller methods",
+      "title": "Update user controller to handle phone number and coordinates",
       "status": "done",
       "depends_on": [
         3
       ],
       "result": {
-        "patch": "diff --git a/backend/controllers/userController.js b/backend/controllers/userController.js\nnew file mode 100644\nindex 0000000..e9b8c3d\n--- /dev/null\n+++ b/backend/controllers/userController.js\n@@ -0,0 +1,52 @@\n+const express = require('express');\n+const router = express.Router();\n+const User = require('../models/user');\n+const bcrypt = require('bcryptjs');\n+\n+// Create a new user\n+router.post('/', async (req, res) => {\n+  try {\n+    const { username, email, password } = req.body;\n+    let user = await User.findOne({ email });\n+    if (user) return res.status(400).json({ message: 'User already exists' });\n+\n+    user = new User({\n+      username,\n+      email,\n+      password\n+    });\n+\n+    const salt = await bcrypt.genSalt(10);\n+    user.password = await bcrypt.hash(password, salt);\n+\n+    await user.save();\n+    res.status(201).json({ message: 'User created' });\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n+  }\n+});\n+\n+// Get all users\n+router.get('/', async (req, res) => {\n+  try {\n+    const users = await User.find();\n+    res.json(users);\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n+  }\n+});\n+\n+// Update a user\n+router.put('/:id', async (req, res) => {\n+  try {\n+    const { username, email, password } = req.body;\n+    let user = await User.findById(req.params.id);\n+    if (!user) return res.status(404).json({ message: 'User not found' });\n+\n+    user.username = username;\n+    user.email = email;\n+    user.password = password;\n+\n+    const salt = await bcrypt.genSalt(10);\n+    user.password = await bcrypt.hash(password, salt);\n+\n+    await user.save();\n+    res.json({ message: 'User updated' });\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n+  }\n+});\n+\n+// Delete a user\n+router.delete('/:id', async (req, res) => {\n+  try {\n+    const user = await User.findById(req.params.id);\n+    if (!user) return res.status(404).json({ message: 'User not found' });\n+\n+    await user.remove();\n+    res.json({ message: 'User deleted' });\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n+  }\n+});\n+\n+module.exports = router;",
+        "patch": "diff --git a/backend/controllers/userController.js b/backend/controllers/userController.js\nindex 1a2b3c4..5d6e7f8 100644\n--- a/backend/controllers/userController.js\n+++ b/backend/controllers/userController.js\n@@ -1,5 +1,7 @@\n const User = require('../models/user');\n \n+const geolib = require('geolib');\n+\n // Create a new user\n exports.createUser = async (req, res) => {\n     try {\n@@ -20,6 +22,8 @@ exports.createUser = async (req, res) => {\n         });\n     } catch (error) {\n         return res.status(500).json({ message: error.message });\n+    }\n+};\n \n // Update an existing user\n exports.updateUser = async (req, res) => {\n@@ -34,6 +38,12 @@ exports.updateUser = async (req, res) => {\n         return res.status(404).json({ message: 'User not found' });\n     }\n \n+    if (req.body.phoneNumber && req.body.latitude && req.body.longitude) {\n+        user.phoneNumber = req.body.phoneNumber;\n+        user.location = geolib.getPointFromCoordinates(req.body.latitude, req.body.longitude);\n+    }\n+\n     await user.save();\n     res.json(user);\n };\n@@ -45,6 +55,12 @@ exports.getUserById = async (req, res) => {\n         return res.status(404).json({ message: 'User not found' });\n     }\n \n+    if (user.location) {\n+        const { latitude, longitude } = user.location;\n+        user.latitude = latitude;\n+        user.longitude = longitude;\n+    }\n+\n     res.json(user);\n };",
         "files_changed": [
           "backend/controllers/userController.js"
         ],
@@ -217,233 +116,85 @@
     {
       "seq": 6,
       "kind": "code",
-      "title": "Create API endpoints for restaurants",
-      "status": "done",
+      "title": "Update restaurant routes to handle phone number and coordinates",
+      "status": "running",
       "depends_on": [
         4
       ],
-      "result": {
-        "patch": "diff --git a/backend/routes/restaurantRoutes.js b/backend/routes/restaurantRoutes.js\nnew file mode 100644\n--- /dev/null\n+++ b/backend/routes/restaurantRoutes.js\n@@ -0,0 +1,28 @@\nconst express = require('express');\nconst router = express.Router();\nconst restaurantController = require('../controllers/restaurantController');\n\nrouter.post('/', restaurantController.createRestaurant);\nrouter.get('/', restaurantController.getAllRestaurants);\nrouter.get('/:id', restaurantController.getRestaurantById);\nrouter.put('/:id', restaurantController.updateRestaurant);\nrouter.delete('/:id', restaurantController.deleteRestaurant);\n\nmodule.exports = router;\ndiff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\n--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -1,6 +1,7 @@\n const express = require('express');\n+const Restaurant = require('../models/restaurant');\n\n const router = express.Router();\n\n@@ -25,6 +26,30 @@ exports.createRestaurant = async (req, res) => {\n   try {\n     const restaurant = new Restaurant(req.body);\n     await restaurant.save();\n+    res.status(201).json(restaurant);\n+  } catch (error) {\n+    res.status(400).json({ message: error.message });\n+  }\n+};\n+\n+exports.getAllRestaurants = async (req, res) => {\n+  try {\n+    const restaurants = await Restaurant.find();\n+    res.json(restaurants);\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n+  }\n+};\n+\n+exports.getRestaurantById = async (req, res) => {\n+  try {\n+    const restaurant = await Restaurant.findById(req.params.id);\n+    if (!restaurant) {\n+      return res.status(404).json({ message: 'Restaurant not found' });\n+    }\n+    res.json(restaurant);\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n   }\n };",
-        "files_changed": [
-          "backend/routes/"
-        ],
-        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
-        "attempts": 1
-      },
+      "result": null,
       "error": null
     },
     {
       "seq": 7,
       "kind": "code",
-      "title": "Create API endpoints for users",
-      "status": "done",
+      "title": "Update user routes to handle phone number and coordinates",
+      "status": "queued",
       "depends_on": [
         5
       ],
-      "result": {
-        "patch": "diff --git a/backend/routes/userRoutes.js b/backend/routes/userRoutes.js\nnew file mode 100644\n--- /dev/null\n+++ b/backend/routes/userRoutes.js\n@@ -0,0 +1,32 @@\n+const express = require('express');\n+const router = express.Router();\n+const userController = require('../controllers/userController');\n+\n+// Create a new user\n+router.post('/', userController.createUser);\n+\n+// Retrieve all users\n+router.get('/', userController.getAllUsers);\n+\n+// Retrieve a single user by ID\n+router.get('/:id', userController.getUserById);\n+\n+// Update a user with specified ID\n+router.put('/:id', userController.updateUser);\n+\n+// Delete a user with specified ID\n+router.delete('/:id', userController.deleteUser);\n+\n+module.exports = router;\ndiff --git a/backend/controllers/userController.js b/backend/controllers/userController.js\n@@ -1,6 +1,7 @@\n const express = require('express');\n const User = require('../models/user');\n+const bcrypt = require('bcryptjs');\n\n // Create and Save a new User\n exports.createUser = (req, res) => {\n@@ -20,6 +21,34 @@ exports.getAllUsers = (req, res) => {\n     });\n };\n\n+// Retrieve a single user by ID\n+exports.getUserById = (req, res) => {\n+    User.findById(req.params.id)\n+        .then(user => {\n+            if (!user) {\n+                return res.status(404).send({\n+                    message: \"User not found with id \" + req.params.id\n+                });\n+            }\n+            res.send(user);\n+        })\n+        .catch(err => {\n+            if (err.kind === 'ObjectId') {\n+                return res.status(404).send({\n+                    message: \"User not found with id \" + req.params.id\n+                });\n+            }\n+            return res.status(500).send({\n+                message: \"Error retrieving user with id \" + req.params.id\n+            });\n+        });\n+};\n+\n // Update a user identified by the userId in the request\n exports.updateUser = (req, res) => {\n     User.findByIdAndUpdate(req.params.id, req.body, { new: true })\n@@ -31,6 +58,24 @@ exports.deleteUser = (req, res) => {\n         .catch(err => {\n             if (err.kind === 'ObjectId' || err.name === 'NotFound') {\n                 return res.status(404).send({\n-                    message: \"User not found with id \" + req.params.id\n+                    message: \"User not found with id \" + req.params.id\n                 });\n             }\n             return res.status(500).send({\n-                message: \"Error updating user with id \" + req.params.id\n+                message: \"Error updating user with id \" + req.params.id\n             });\n         });\n     };\ndiff --git a/backend/models/user.js b/backend/models/user.js\n@@ -1,6 +1,7 @@\n const mongoose = require('mongoose');\n\n+const UserSchema = new mongoose.Schema({\n     name: String,\n     email: {\n         type: String,\n@@ -14,3 +15,4 @@ const UserSchema = new mongoose.Schema({\n     password: String\n });\n\n+module.exports = mongoose.model('User', UserSchema);",
-        "files_changed": [
-          "backend/routes/userRoutes.js"
-        ],
-        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
-        "attempts": 1
-      },
+      "result": null,
       "error": null
     },
     {
       "seq": 8,
       "kind": "test",
-      "title": "Write unit tests for restaurant controller methods",
-      "status": "done",
+      "title": "Write unit tests for restaurant model",
+      "status": "pending",
       "depends_on": [
-        4
+        2,
+        4,
+        6
       ],
-      "result": {
-        "passed": false,
-        "command": "npm test --if-present",
-        "output": "npm error code EJSONPARSE\nnpm error JSON.parse Invalid package.json: JSONParseError: Unexpected non-whitespace character after JSON at position 17 (line 1 column 18) while parsing near \"   \\\"dependencies\\\": {\\n     \\\"express\\\": ...\"\nnpm error JSON.parse Failed to parse JSON data.\nnpm error JSON.parse Note: package.json must be actual JSON, not just JavaScript.\nnpm error A complete log of this run can be found in: /Users/jeromefrancis/.npm/_logs/2026-07-24T22_59_14_237Z-debug-0.log",
-        "exit_code": 1
-      },
+      "result": null,
       "error": null
     },
     {
       "seq": 9,
       "kind": "test",
-      "title": "Write unit tests for user controller methods",
-      "status": "done",
+      "title": "Write unit tests for user model",
+      "status": "pending",
       "depends_on": [
-        5
+        3,
+        5,
+        7
       ],
-      "result": {
-        "passed": false,
-        "command": "npm test --if-present",
-        "output": "npm error code EJSONPARSE\nnpm error JSON.parse Invalid package.json: JSONParseError: Unexpected non-whitespace character after JSON at position 17 (line 1 column 18) while parsing near \"   \\\"dependencies\\\": {\\n     \\\"express\\\": ...\"\nnpm error JSON.parse Failed to parse JSON data.\nnpm error JSON.parse Note: package.json must be actual JSON, not just JavaScript.\nnpm error A complete log of this run can be found in: /Users/jeromefrancis/.npm/_logs/2026-07-24T22_59_36_566Z-debug-0.log",
-        "exit_code": 1
-      },
+      "result": null,
       "error": null
     },
     {
       "seq": 10,
-      "kind": "review",
-      "title": "Code review by team members",
-      "status": "done",
+      "kind": "test",
+      "title": "Write integration tests for restaurant controller",
+      "status": "pending",
       "depends_on": [
-        6,
-        7,
-        8,
-        9
+        4,
+        6
       ],
-      "result": {
-        "approved": false,
-        "summary": "The code patch includes the creation of models and controllers for restaurants and users, but it lacks proper validation and security measures.",
-        "comments": [
-          "1. The restaurant model is missing a rating field in the schema.",
-          "2. The user model should include additional fields such as name and address.",
-          "3. Passwords should not be stored in plain text; use bcrypt for hashing.",
-          "4. Validation for input data is missing, which can lead to security vulnerabilities.",
-          "5. Error handling could be improved by providing more specific error messages."
-        ]
-      },
+      "result": null,
       "error": null
     },
     {
       "seq": 11,
-      "kind": "commit",
-      "title": "Commit changes to version control",
-      "status": "done",
+      "kind": "test",
+      "title": "Write integration tests for user controller",
+      "status": "pending",
       "depends_on": [
-        10
+        5,
+        7
       ],
-      "result": {
-        "commit_sha": "c9c2b8971e5b",
-        "branch": "main",
-        "message": "Commit changes to version control\n\nCommit all the changes made in this task sequence to the version control system with appropriate commit messages."
-      },
+      "result": null,
       "error": null
     },
     {
       "seq": 12,
       "kind": "deploy",
-      "title": "Deploy application to production environment",
-      "status": "done",
+      "title": "Deploy changes to production",
+      "status": "pending",
       "depends_on": [
+        8,
+        9,
+        10,
         11
-      ],
-      "result": {
-        "deployed": true,
-        "repo_url": "https://github.com/RubberDucky3/restaurant-finder",
-        "pages_url": "https://RubberDucky3.github.io/restaurant-finder/",
-        "is_live": true
-      },
-      "error": null
-    },
-    {
-      "seq": 13,
-      "kind": "code",
-      "title": "Add rating field to restaurant model",
-      "status": "running",
-      "depends_on": [],
-      "result": null,
-      "error": null
-    },
-    {
-      "seq": 14,
-      "kind": "code",
-      "title": "Add name and address fields to user model",
-      "status": "pending",
-      "depends_on": [
-        13
-      ],
-      "result": null,
-      "error": null
-    },
-    {
-      "seq": 15,
-      "kind": "code",
-      "title": "Hash passwords using bcrypt",
-      "status": "pending",
-      "depends_on": [
-        14
-      ],
-      "result": null,
-      "error": null
-    },
-    {
-      "seq": 16,
-      "kind": "code",
-      "title": "Add validation for input data",
-      "status": "pending",
-      "depends_on": [
-        15
-      ],
-      "result": null,
-      "error": null
-    },
-    {
-      "seq": 17,
-      "kind": "code",
-      "title": "Improve error handling with specific messages",
-      "status": "pending",
-      "depends_on": [
-        16
-      ],
-      "result": null,
-      "error": null
-    },
-    {
-      "seq": 18,
-      "kind": "test",
-      "title": "Write unit tests for restaurant model",
-      "status": "pending",
-      "depends_on": [
-        13
-      ],
-      "result": null,
-      "error": null
-    },
-    {
-      "seq": 19,
-      "kind": "test",
-      "title": "Write unit tests for user model",
-      "status": "pending",
-      "depends_on": [
-        14,
-        15
-      ],
-      "result": null,
-      "error": null
-    },
-    {
-      "seq": 20,
-      "kind": "review",
-      "title": "Code review by team members",
-      "status": "pending",
-      "depends_on": [
-        17,
-        18,
-        19
-      ],
-      "result": null,
-      "error": null
-    },
-    {
-      "seq": 21,
-      "kind": "commit",
-      "title": "Commit changes to version control",
-      "status": "pending",
-      "depends_on": [
-        20
-      ],
-      "result": null,
-      "error": null
-    },
-    {
-      "seq": 22,
-      "kind": "deploy",
-      "title": "Deploy updated backend to production",
-      "status": "pending",
-      "depends_on": [
-        21
       ],
       "result": null,
       "error": null

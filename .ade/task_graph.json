@@ -146,18 +146,25 @@
       "seq": 2,
       "kind": "code",
       "title": "Define restaurant model in MongoDB",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         1
       ],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nnew file mode 100644\n--- /dev/null\n+++ b/backend/models/restaurant.js\n@@ -0,0 +1,23 @@\n+const mongoose = require('mongoose');\n+\n+const restaurantSchema = new mongoose.Schema({\n+    name: {\n+        type: String,\n+        required: true\n+    },\n+    address: {\n+        type: String,\n+        required: true\n+    },\n+    cuisine: {\n+        type: String,\n+        required: true\n+    },\n+    rating: {\n+        type: Number,\n+        default: 0\n+    }\n+});\n+\n+const Restaurant = mongoose.model('Restaurant', restaurantSchema);\n+\n+module.exports = Restaurant;",
+        "files_changed": [
+          "backend/models/restaurant.js"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 3,
       "kind": "code",
       "title": "Define user model in MongoDB",
-      "status": "queued",
+      "status": "running",
       "depends_on": [
         1
       ],
@@ -168,7 +175,7 @@
       "seq": 4,
       "kind": "code",
       "title": "Implement restaurant controller methods",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         2
       ],

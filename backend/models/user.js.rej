@@ -1,0 +1,10 @@
+--- backend/models/user.js
++++ backend/models/user.js
+@@ -1,5 +1,7 @@
+ const mongoose = require('mongoose');
++const dotenv = require('dotenv');
+ 
++dotenv.config();
+ 
+ const userSchema = new mongoose.Schema({
+   username: String,

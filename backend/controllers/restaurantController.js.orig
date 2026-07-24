@@ -11,9 +11,7 @@ const searchRestaurants = async (req, res) => {
      return res.status(500).json({ error: 'Failed to fetch restaurants' });
   }
 };
-const dotenv = require('dotenv');
 
-dotenv.config();
 const searchRestaurants = async (req, res) => {
   const { query, cuisine } = req.query;
   try {

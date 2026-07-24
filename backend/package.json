@@ -1,11 +1,82 @@
-{
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
-}
+ {
+   "name": "restaurant-finder-backend",
+  "version": "1.1.0",
+   "description": "Backend for the Restaurant Finder project",
+   "main": "index.js",
+   "scripts": {
+@@ -10,6 +10,8 @@
+     "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "keywords": [],
+  "dependencies": {
+    "dotenv": "^10.0.0"
+  }
+ }
+diff --git a/backend/.env b/backend/.env
+new file mode 100644
+++ b/backend/.env
+@@ -0,0 +1,3 @@
+# Environment variables for the backend
+DB_HOST=localhost
+DB_PORT=5432
+diff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js
+index 8a9b0c1..d2e3f4g 100644
+++ b/backend/controllers/restaurantController.js
+@@ -1,5 +1,7 @@
+ const express = require('express');
+ const router = express.Router();
+const dotenv = require('dotenv');
+ 
+dotenv.config();
+ 
+ // Example route to get all restaurants
+ router.get('/restaurants', (req, res) => {
+diff --git a/backend/controllers/userController.js b/backend/controllers/userController.js
+index 1a2b3c4..5d6e7f8 100644
+++ b/backend/controllers/userController.js
+@@ -1,5 +1,7 @@
+ const express = require('express');
+ const router = express.Router();
+const dotenv = require('dotenv');
+ 
+dotenv.config();
+ 
+ // Example route to get all users
+ router.get('/users', (req, res) => {
+diff --git a/backend/models/restaurant.js b/backend/models/restaurant.js
+index 9a8b7c6..f5e4d32 100644
+++ b/backend/models/restaurant.js
+@@ -1,5 +1,7 @@
+ const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+ 
+dotenv.config();
+ 
+ const restaurantSchema = new mongoose.Schema({
+   name: String,
+diff --git a/backend/models/user.js b/backend/models/user.js
+index 6a5b4c3..2d1e0f9 100644
+++ b/backend/models/user.js
+@@ -1,5 +1,7 @@
+ const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+ 
+dotenv.config();
+ 
+ const userSchema = new mongoose.Schema({
+   username: String,
+diff --git a/.ade/task_graph.json b/.ade/task_graph.json
+index 0a1b2c3..4d5e6f7 100644
+++ b/.ade/task_graph.json
+@@ -1,4 +1,4 @@
+ {
+   "tasks": [
+     {
+      "id": "install-nodejs-dependencies",
+       "title": "Set up backend environment",
+       "description": "Install Node.js dependencies for the backend by running `npm install` in the `backend` directory. Configure the `.env` file with necessary environment variables.",
+       "dependencies": [],
+@@ -10,6 +10,8 @@
+     }
+   ]
+ }

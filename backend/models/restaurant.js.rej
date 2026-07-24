@@ -1,0 +1,10 @@
+--- backend/models/restaurant.js
++++ backend/models/restaurant.js
+@@ -1,5 +1,7 @@
+ const mongoose = require('mongoose');
++const dotenv = require('dotenv');
+ 
++dotenv.config();
+ 
+ const restaurantSchema = new mongoose.Schema({
+   name: String,

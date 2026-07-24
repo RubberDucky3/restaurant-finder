@@ -1,0 +1,8 @@
+--- .ade/task_graph.json
++++ .ade/task_graph.json
+@@ -1,4 +1,4 @@
+ {
+   "tasks": [
+     {
+-      "id": "setup-backend-environment",
++      "id": "install-nodejs-dependencies",

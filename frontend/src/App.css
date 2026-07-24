@@ -1,5 +1,12 @@
 .dark-mode {
   background-color: #333;
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.dark-mode {
+  background-color: #333333;
+  color: #ffffff;
   background-color: #333;
   color: #fff;
   background-color: #ffffff; /* Default light mode background */

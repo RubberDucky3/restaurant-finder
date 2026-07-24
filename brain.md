@@ -108,3 +108,6 @@ Goal: run the project
 - [2026-07-24 22:56:04] 📝 **Code Applied**: Modified 1 files for Task #2
 - [2026-07-24 22:56:04] ✅ **Completed Task #2 (code)**: Define restaurant model in MongoDB
 - [2026-07-24 22:56:04] 🚀 **Started Task #3 (code)**: Define user model in MongoDB
+- [2026-07-24 22:56:12] 📝 **Code Applied**: Modified 1 files for Task #3
+- [2026-07-24 22:56:12] ✅ **Completed Task #3 (code)**: Define user model in MongoDB
+- [2026-07-24 22:56:12] 🚀 **Started Task #22 (code)**: Refactor backend models to use Mongoose schemas for restaurants and users

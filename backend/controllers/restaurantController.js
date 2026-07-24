@@ -3,6 +3,7 @@ const router = express.Router();
 
 // Import the Restaurant model
 const Restaurant = require('../models/restaurant');
+const dotenv = require('dotenv');
 
 // Create a new restaurant
 router.post('/', async (req, res) => {

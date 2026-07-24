@@ -1,4 +1,5 @@
  import React, { useState } from 'react';
+import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import GoogleMapReact from 'google-maps-react';
  
  const RegistrationForm = () => {

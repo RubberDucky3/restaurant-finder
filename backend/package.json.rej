@@ -1,0 +1,10 @@
+--- backend/package.json
++++ backend/package.json
+@@ -10,6 +10,7 @@
+   "dependencies": {
+     "express": "^4.17.1",
+     "mongoose": "^5.12.3"
++    "dotenv": "^8.2.0"
+   },
+   "devDependencies": {}
+ }

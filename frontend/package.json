@@ -1,7 +1,7 @@
 {
   "name": "restaurant-finder-frontend",
   "version": "1.0.0",
-  "description": "Frontend for the Restaurant Finder app",
+  "description": "Frontend for the Restaurant Finder project",
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
@@ -16,42 +16,3 @@
   },
   "devDependencies": {}
 }
-diff --git a/frontend/public/index.html b/frontend/public/index.html
-new file mode 100644
-index 0000000..b9e2c8f
-++ b/frontend/public/index.html
-@@ -0,0 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Restaurant Finder</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-  </body>
-</html>
-diff --git a/frontend/src/App.js b/frontend/src/App.js
-new file mode 100644
-index 0000000..3e8b9c2
-++ b/frontend/src/App.js
-@@ -0,0 +1,5 @@
-import React from 'react';
-
-function App() {
-  return <div>Restaurant Finder</div>;
-}
-
-export default App;
-diff --git a/frontend/src/index.js b/frontend/src/index.js
-new file mode 100644
-index 0000000..b9e2c8f
-++ b/frontend/src/index.js
-@@ -0,0 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-
-ReactDOM.render(<App />, document.getElementById('root'));

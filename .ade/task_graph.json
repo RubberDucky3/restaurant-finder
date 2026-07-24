@@ -184,16 +184,23 @@
       "seq": 10,
       "kind": "code",
       "title": "Refactor backend models for global restaurants",
-      "status": "running",
+      "status": "done",
       "depends_on": [],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/backend/models/restaurant.js b/backend/models/restaurant.js\nnew file mode 100644\n--- /dev/null\n+++ b/backend/models/restaurant.js\n@@ -0,0 +1,25 @@\n+const mongoose = require('mongoose');\n+\n+const restaurantSchema = new mongoose.Schema({\n+  name: {\n+    type: String,\n+    required: true\n+  },\n+  location: {\n+    type: {\n+      type: String,\n+      enum: ['Point'],\n+      required: true\n+    },\n+    coordinates: {\n+      type: [Number],\n+      required: true\n+    }\n+  },\n+  globalAccess: {\n+    type: Boolean,\n+    default: false\n+  }\n+});\n+\n+const Restaurant = mongoose.model('Restaurant', restaurantSchema);\n+\n+module.exports = Restaurant;\ndiff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\n--- a/backend/controllers/restaurantController.js\n+++ b/backend/controllers/restaurantController.js\n@@ -0,0 +1,25 @@\n+const Restaurant = require('../models/restaurant');\n+\n+exports.addRestaurantToFavorites = async (req, res) => {\n+  try {\n+    const restaurant = await Restaurant.findById(req.params.id);\n+    if (!restaurant) {\n+      return res.status(404).json({ message: 'Restaurant not found' });\n+    }\n+    req.user.favorites.push(restaurant._id);\n+    await req.user.save();\n+    res.json({ message: 'Restaurant added to favorites' });\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n+  }\n+};\n+\n+exports.getGlobalRestaurants = async (req, res) => {\n+  try {\n+    const restaurants = await Restaurant.find({ globalAccess: true });\n+    res.json(restaurants);\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n+  }\n+};\ndiff --git a/backend/controllers/userController.js b/backend/controllers/userController.js\n--- a/backend/controllers/userController.js\n+++ b/backend/controllers/userController.js\n@@ -1,6 +1,7 @@\n const User = require('../models/user');\n const bcrypt = require('bcryptjs');\n+const Restaurant = require('../models/restaurant');\n \n exports.registerUser = async (req, res) => {\n   try {\n@@ -29,3 +30,14 @@ exports.loginUser = async (req, res) => {\n     res.json({ message: 'Invalid credentials' });\n   }\n };\n+\n+exports.addRestaurantToFavorites = async (req, res) => {\n+  try {\n+    const user = await User.findById(req.user.id);\n+    if (!user) {\n+      return res.status(404).json({ message: 'User not found' });\n+    }\n+    await Restaurant.findByIdAndUpdate(req.params.restaurantId, { $addToSet: { users: req.user._id } });\n+    res.json({ message: 'Restaurant added to favorites' });\n+  } catch (error) {\n+    res.status(500).json({ message: error.message });\n+  }\n };",
+        "files_changed": [
+          "backend/models/restaurant.js"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 11,
       "kind": "code",
       "title": "Implement dark mode conditionally based on user preference or system settings",
-      "status": "pending",
+      "status": "running",
       "depends_on": [
         10
       ],
@@ -204,7 +211,7 @@
       "seq": 12,
       "kind": "code",
       "title": "Refactor backend controllers and models for restaurant operations",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         10
       ],
@@ -215,7 +222,7 @@
       "seq": 13,
       "kind": "code",
       "title": "Secure Google Maps API key management",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         10
       ],
@@ -226,7 +233,7 @@
       "seq": 14,
       "kind": "code",
       "title": "Refactor frontend components for registration form",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         10
       ],
@@ -248,7 +255,7 @@
       "seq": 16,
       "kind": "code",
       "title": "Refactor backend package.json for dependencies",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         10
       ],
@@ -259,7 +266,7 @@
       "seq": 17,
       "kind": "code",
       "title": "Refactor frontend package.json for dependencies",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         10
       ],

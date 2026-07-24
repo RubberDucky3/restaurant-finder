@@ -1,52 +1,74 @@
+ const express = require('express');
+const { validationResult } = require('express-validator');
+ const router = express.Router();
+ 
  const Restaurant = require('../models/restaurant');
- 
-const geolib = require('geolib');
+@@ -25,6 +26,14 @@ exports.createRestaurant = async (req, res) => {
+     try {
+         const errors = validationResult(req);
+         if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
 
- // Create a new restaurant
- exports.createRestaurant = async (req, res) => {
-     try {
-@@ -20,6 +22,8 @@ exports.createRestaurant = async (req, res) => {
-         const { name, address, cuisine, phoneNumber, coordinates } = req.body;
- 
-         const newRestaurant = new Restaurant({
-            phoneNumber,
-            coordinates: geolib.parseCoordinates(coordinates),
-             name,
-             address,
-             cuisine
-@@ -40,6 +44,8 @@ exports.updateRestaurant = async (req, res) => {
-     try {
-         const { id } = req.params;
-         const { name, address, cuisine, phoneNumber, coordinates } = req.body;
-        const parsedCoordinates = geolib.parseCoordinates(coordinates);
- 
-         const updatedRestaurant = await Restaurant.findByIdAndUpdate(id, {
-             name,
-@@ -50,6 +56,7 @@ exports.updateRestaurant = async (req, res) => {
-             cuisine,
-             phoneNumber,
-             coordinates: parsedCoordinates
-        }, { new: true });
- 
-         if (!updatedRestaurant) {
-             return res.status(404).json({ message: 'Restaurant not found' });
-@@ -65,6 +72,8 @@ exports.getRestaurantById = async (req, res) => {
-     try {
-         const { id } = req.params;
- 
-        const restaurant = await Restaurant.findById(id);
+        const { name, address, cuisine } = req.body;
 
-         if (!restaurant) {
-             return res.status(404).json({ message: 'Restaurant not found' });
+        // Validate input data
+        if (!name || !address || !cuisine) {
+            return res.status(400).json({ message: 'All fields are required' });
          }
-@@ -80,6 +89,7 @@ exports.getAllRestaurants = async (req, res) => {
+ 
+         const restaurant = new Restaurant({
+@@ -52,6 +61,14 @@ exports.getRestaurantById = async (req, res) => {
      try {
-         const restaurants = await Restaurant.find();
+         const errors = validationResult(req);
+         if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { id } = req.params;
+
+        // Validate input data
+        if (!id) {
+            return res.status(400).json({ message: 'ID is required' });
+         }
  
-        const parsedRestaurants = restaurants.map(restaurant => ({
-             ...restaurant.toObject(),
-            coordinates: geolib.formatCoordinates(restaurant.coordinates),
-            phoneNumber: restaurant.phoneNumber
-         }));
+         const restaurant = await Restaurant.findById(req.params.id);
+diff --git a/backend/controllers/userController.js b/backend/controllers/userController.js
+index 3f4b5c6..e7d8a9b 100644
+++ b/backend/controllers/userController.js
+@@ -1,6 +1,7 @@
+ const express = require('express');
+const { validationResult } = require('express-validator');
+ const router = express.Router();
  
-         res.json(parsedRestaurants);
+ const User = require('../models/user');
+@@ -25,6 +26,14 @@ exports.createUser = async (req, res) => {
+     try {
+         const errors = validationResult(req);
+         if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { name, email, password } = req.body;
+
+        // Validate input data
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: 'All fields are required' });
+         }
+ 
+         let user = await User.findOne({ email });
+@@ -52,6 +61,14 @@ exports.getUserById = async (req, res) => {
+     try {
+         const errors = validationResult(req);
+         if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { id } = req.params;
+
+        // Validate input data
+        if (!id) {
+            return res.status(400).json({ message: 'ID is required' });
+         }
+ 
+         const user = await User.findById(req.params.id);

@@ -1,46 +1,29 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const dotenv = require('dotenv');
+ const User = require('../models/user');
+const Restaurant = require('../models/restaurant');
+ 
+ exports.registerUser = async (req, res) => {
+   try {
+@@ -20,4 +21,18 @@ exports.loginUser = async (req, res) => {
+     return res.status(401).json({ message: 'Invalid credentials' });
+   }
+ };
 
-dotenv.config();
-exports.registerUser = async (req, res) => {
+exports.getGlobalRestaurants = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res.status(400).json({ message: 'Username and password are required' });
-    }
+    const restaurants = await Restaurant.find({});
+    res.json(restaurants);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching global restaurants' });
+  }
+};
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, password: hashedPassword });
+exports.addRestaurantToFavorites = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    user.favorites.push(req.body.restaurantId);
     await user.save();
-
-    res.status(201).json({ message: 'User registered successfully' });
+    res.json(user);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Error adding restaurant to favorites' });
   }
-};
-
-exports.loginUser = async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res.status(400).json({ message: 'Username and password are required' });
-    }
-
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+ };

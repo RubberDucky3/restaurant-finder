@@ -80,18 +80,25 @@
       "seq": 4,
       "kind": "code",
       "title": "Update Restaurant Controller",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         3
       ],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js\nnew file mode 100644\n--- /dev/null\n+++ b/backend/controllers/restaurantController.js\n@@ -0,0 +1,32 @@\n+const express = require('express');\n+const router = express.Router();\n+const axios = require('axios');\n+\n+// Endpoint to fetch restaurant data from a public API\n+router.get('/restaurants', async (req, res) => {\n+  try {\n+    const response = await axios.get('https://api.example.com/restaurants');\n+    res.json(response.data);\n+  } catch (error) {\n+    res.status(500).json({ error: 'Failed to fetch restaurant data' });\n+  }\n+});\n+\n+// Endpoint to fetch a specific restaurant by ID\n+router.get('/restaurants/:id', async (req, res) => {\n+  try {\n+    const response = await axios.get(`https://api.example.com/restaurants/${req.params.id}`);\n+    res.json(response.data);\n+  } catch (error) {\n+    res.status(500).json({ error: 'Failed to fetch restaurant data' });\n+  }\n+});\n+\n+module.exports = router;\ndiff --git a/backend/routes/index.js b/backend/routes/index.js\nindex 3f4b2c1..e6d8a9b 100644\n--- a/backend/routes/index.js\n+++ b/backend/routes/index.js\n@@ -1,5 +1,7 @@\n const express = require('express');\n const router = express.Router();\n+const restaurantRoutes = require('../controllers/restaurantController');\n \n // Include routes for users\n router.use('/users', require('./userRoutes'));\n@@ -8,3 +10,5 @@ router.use('/users', require('./userRoutes'));\n \n // Include routes for restaurants\n+router.use('/restaurants', restaurantRoutes);\n \n module.exports = router;\ndiff --git a/backend/package.json b/backend/package.json\nindex 6f7b9c2..e4d8a9b 100644\n--- a/backend/package.json\n+++ b/backend/package.json\n@@ -30,6 +30,7 @@\n   \"dependencies\": {\n     \"bcryptjs\": \"^2.4.3\",\n     \"cors\": \"^2.8.5\",\n+    \"axios\": \"^0.21.1\",\n     \"dotenv\": \"^10.0.0\",\n     \"express\": \"^4.17.1\",\n     \"mongoose\": \"^5.12.6\"",
+        "files_changed": [
+          "backend/controllers/restaurantController.js"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 5,
       "kind": "code",
       "title": "Update User Controller",
-      "status": "pending",
+      "status": "running",
       "depends_on": [
         4
       ],

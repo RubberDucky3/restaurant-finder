@@ -47,3 +47,6 @@ Goal: run the project
 - [2026-07-24 22:49:59] 📝 **Code Applied**: Modified 1 files for Task #3
 - [2026-07-24 22:49:59] ✅ **Completed Task #3 (code)**: Fetch Public Restaurant Data
 - [2026-07-24 22:49:59] 🚀 **Started Task #4 (code)**: Update Restaurant Controller
+- [2026-07-24 22:50:09] 📝 **Code Applied**: Modified 1 files for Task #4
+- [2026-07-24 22:50:09] ✅ **Completed Task #4 (code)**: Update Restaurant Controller
+- [2026-07-24 22:50:09] 🚀 **Started Task #5 (code)**: Update User Controller

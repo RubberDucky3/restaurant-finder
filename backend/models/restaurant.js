@@ -1,52 +1,26 @@
-const mongoose = require('mongoose');
-
-const restaurantSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  address: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  cuisine: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  rating: {
-    type: Number,
-    min: 0,
-    max: 5
-  }
-});
-
-module.exports = mongoose.model('Restaurant', restaurantSchema);
-diff --git a/backend/models/user.js b/backend/models/user.js
-new file mode 100644
-++ b/backend/models/user.js
-@@ -0,0 +1,25 @@
-const mongoose = require('mongoose');
-
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true
-  },
-  email: {
-    type: String,
-    required: true,
-    trim: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  }
-});
-
-module.exports = mongoose.model('User', userSchema);
+@@ -10,6 +10,8 @@ const restaurantSchema = new mongoose.Schema({
+     name: {
+         type: String,
+         required: true
+    },
+    phoneNumber: {
+        type: String,
+        required: true
+     },
+     address: {
+         type: String,
+@@ -20,6 +24,8 @@ const restaurantSchema = new mongoose.Schema({
+     city: {
+         type: String,
+         required: true
+    },
+    coordinates: {
+        type: [Number],
+        required: true,
+        validate: {
+            validator: (v) => v.length === 2 && typeof v[0] === 'number' && typeof v[1] === 'number',
+            message: 'Coordinates must be an array of two numbers'
+        }
+     },
+     cuisine: {
+         type: String,

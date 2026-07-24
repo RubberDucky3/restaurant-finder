@@ -2,9 +2,9 @@
 +++ backend/controllers/userController.js
 @@ -1,6 +1,7 @@
  const User = require('../models/user');
- const bcrypt = require('bcryptjs');
  
-+const saltRounds = 10;
- 
- // Create and Save a new User
- exports.createUser = async (req, res) => {
+ exports.getAllUsers = async (req, res) => {
++    const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+     try {
+         const users = await User.find();
+         res.json(users);

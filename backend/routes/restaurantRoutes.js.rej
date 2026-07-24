@@ -1,0 +1,10 @@
+--- backend/routes/restaurantRoutes.js
++++ backend/routes/restaurantRoutes.js
+@@ -1,6 +1,7 @@
+ const express = require('express');
+ const router = express.Router();
+ const restaurantController = require('../controllers/restaurantController');
+ 
++const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+ 
+ router.get('/', restaurantController.getAllRestaurants);

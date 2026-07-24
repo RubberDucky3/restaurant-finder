@@ -1,52 +1,29 @@
- const express = require('express');
-const router = express.Router();
+@@ -31,7 +31,25 @@ exports.createRestaurant = async (req, res) => {
+     try {
+         const restaurant = new Restaurant(req.body);
+         await restaurant.save();
+        res.status(201).json({ message: 'Restaurant created successfully', restaurant });
+     } catch (error) {
+        if (error.name === 'ValidationError') {
+            res.status(400).json({ message: 'Validation failed', errors: error.errors });
+        } else {
+            res.status(500).json({ message: 'Internal server error' });
+        }
+     }
+ };
 
-// Import the Restaurant model
-const Restaurant = require('../models/restaurant');
-
-// Create a new restaurant
-router.post('/', async (req, res) => {
-  try {
-    const restaurant = new Restaurant(req.body);
-    await restaurant.save();
-    res.status(201).json(restaurant);
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-// Get all restaurants
-router.get('/', async (req, res) => {
-  try {
-    const restaurants = await Restaurant.find();
-    res.json(restaurants);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
- module.exports = router;
-diff --git a/backend/models/restaurant.js b/backend/models/restaurant.js
-index 1a2b3c4..5d6e7f8 100644
-++ b/backend/models/restaurant.js
-@@ -1,6 +1,23 @@
- const mongoose = require('mongoose');
-
-const restaurantSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  address: {
-    type: String,
-    required: true
-  },
-  cuisine: {
-    type: String,
-    required: true
-  }
-});
-
- const Restaurant = mongoose.model('Restaurant', restaurantSchema);
-
- module.exports = Restaurant;
+@@ -52,7 +60,13 @@ exports.getRestaurantById = async (req, res) => {
+         const restaurant = await Restaurant.findById(req.params.id);
+         if (!restaurant) {
+            res.status(404).json({ message: 'Restaurant not found with id ' + req.params.id });
+         } else {
+            res.json({ message: 'Restaurant retrieved successfully', restaurant });
+         }
+     } catch (error) {
+        if (error.kind === 'ObjectId') {
+            res.status(404).json({ message: 'Invalid Restaurant ID' });
+        } else {
+            res.status(500).json({ message: 'Internal server error' });
+        }
+     }
+ };

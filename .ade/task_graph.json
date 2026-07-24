@@ -381,62 +381,100 @@
       "seq": 21,
       "kind": "code",
       "title": "Generate a functional package.json for the frontend",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         19
       ],
-      "result": null,
+      "result": {
+        "patch": "diff --git a/frontend/package.json b/frontend/package.json\nnew file mode 100644\n--- /dev/null\n+++ b/frontend/package.json\n@@ -0,0 +1,23 @@\n+{\n+  \"name\": \"restaurant-finder-frontend\",\n+  \"version\": \"1.0.0\",\n+  \"description\": \"Frontend for the Restaurant Finder project\",\n+  \"main\": \"index.js\",\n+  \"scripts\": {\n+    \"start\": \"react-scripts start\",\n+    \"build\": \"react-scripts build\"\n+  },\n+  \"dependencies\": {\n+    \"react\": \"^17.0.2\",\n+    \"react-dom\": \"^17.0.2\"\n+  },\n+  \"devDependencies\": {\n+    \"react-scripts\": \"4.0.3\"\n+  }\n+}",
+        "files_changed": [
+          "frontend/package.json"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 22,
       "kind": "test",
       "title": "Test the backend package.json",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         20
       ],
-      "result": null,
+      "result": {
+        "passed": false,
+        "command": "python3 -m unittest",
+        "output": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nNO TESTS RAN",
+        "exit_code": 5
+      },
       "error": null
     },
     {
       "seq": 23,
       "kind": "test",
       "title": "Test the frontend package.json",
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         21
       ],
-      "result": null,
+      "result": {
+        "passed": false,
+        "command": "python3 -m unittest",
+        "output": "----------------------------------------------------------------------\nRan 0 tests in 0.000s\n\nNO TESTS RAN",
+        "exit_code": 5
+      },
       "error": null
     },
     {
       "seq": 24,
       "kind": "review",
       "title": "Review the backend package.json",
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         22
       ],
-      "result": null,
+      "result": {
+        "approved": false,
+        "summary": "The code patch contains multiple issues that need to be addressed.",
+        "comments": [
+          "The backend package.json should not have a version of '1.0.0' as it is being updated in subsequent patches.",
+          "The frontend package.json should include the necessary dependencies for the project, such as axios for making HTTP requests.",
+          "The .env file should be added to the .gitignore file to prevent sensitive information from being committed to the repository.",
+          "The backend controllers and models should include proper error handling and validation.",
+          "The frontend components should include proper form validation and error handling."
+        ]
+      },
       "error": null
     },
     {
       "seq": 25,
       "kind": "review",
       "title": "Review the frontend package.json",
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         23
       ],
-      "result": null,
+      "result": {
+        "approved": false,
+        "summary": "The code patch contains multiple issues that need to be addressed before approval.",
+        "comments": [
+          "Task #2: The backend package.json is empty and lacks necessary dependencies like express, mongoose, and dotenv.",
+          "Task #4: The frontend package.json is missing the react-scripts dependency which is essential for building the React application.",
+          "Task #8: The version of the backend package.json should be updated to match the new name 'restaurant-finder-backend'.",
+          "Task #10: The RegistrationForm component in the frontend does not handle user registration logic. It only sends a POST request but lacks server-side validation and error handling.",
+          "Task #20: The backend package.json is duplicated and should be consolidated with the changes made in Task #8.",
+          "Task #21: The frontend package.json is duplicated and should be consolidated with the changes made in Task #4."
+        ]
+      },
       "error": null
     },
     {
       "seq": 26,
       "kind": "commit",
       "title": "Commit changes for backend package.json",
-      "status": "pending",
+      "status": "running",
       "depends_on": [
         24
       ],
@@ -447,7 +485,7 @@
       "seq": 27,
       "kind": "commit",
       "title": "Commit changes for frontend package.json",
-      "status": "pending",
+      "status": "queued",
       "depends_on": [
         25
       ],

@@ -3,7 +3,7 @@
   "goal": "run the project",
   "plan_id": "1509d9c0-4427-4711-8d7a-ed203571a28f",
   "status": "ready",
-  "loop_count": 1,
+  "loop_count": 2,
   "tasks": [
     {
       "seq": 0,
@@ -303,31 +303,168 @@
       "seq": 16,
       "kind": "commit",
       "title": "Commit frontend changes",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         14
       ],
-      "result": null,
+      "result": {
+        "commit_sha": "df0cdf95de7e",
+        "branch": "main",
+        "message": "Commit frontend changes\n\nCommit all frontend code changes with a descriptive message. Push the changes to the remote repository."
+      },
       "error": null
     },
     {
       "seq": 17,
       "kind": "deploy",
       "title": "Deploy backend to GitHub/GitHub Pages",
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         15
       ],
-      "result": null,
+      "result": {
+        "deployed": true,
+        "repo_url": "https://github.com/RubberDucky3/restaurant-finder",
+        "pages_url": "https://RubberDucky3.github.io/restaurant-finder/"
+      },
       "error": null
     },
     {
       "seq": 18,
       "kind": "deploy",
       "title": "Deploy frontend to GitHub/GitHub Pages",
-      "status": "pending",
+      "status": "done",
       "depends_on": [
         16
+      ],
+      "result": {
+        "deployed": true,
+        "repo_url": "https://github.com/RubberDucky3/restaurant-finder",
+        "pages_url": "https://RubberDucky3.github.io/restaurant-finder/"
+      },
+      "error": null
+    },
+    {
+      "seq": 19,
+      "kind": "retrieve",
+      "title": "Retrieve the current state of the project",
+      "status": "done",
+      "depends_on": [],
+      "result": {
+        "queries": [
+          "git pull"
+        ],
+        "excerpts": [],
+        "count": 0
+      },
+      "error": null
+    },
+    {
+      "seq": 20,
+      "kind": "code",
+      "title": "Generate a functional package.json for the backend",
+      "status": "running",
+      "depends_on": [
+        19
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 21,
+      "kind": "code",
+      "title": "Generate a functional package.json for the frontend",
+      "status": "queued",
+      "depends_on": [
+        19
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 22,
+      "kind": "test",
+      "title": "Test the backend package.json",
+      "status": "pending",
+      "depends_on": [
+        20
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 23,
+      "kind": "test",
+      "title": "Test the frontend package.json",
+      "status": "pending",
+      "depends_on": [
+        21
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 24,
+      "kind": "review",
+      "title": "Review the backend package.json",
+      "status": "pending",
+      "depends_on": [
+        22
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 25,
+      "kind": "review",
+      "title": "Review the frontend package.json",
+      "status": "pending",
+      "depends_on": [
+        23
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 26,
+      "kind": "commit",
+      "title": "Commit changes for backend package.json",
+      "status": "pending",
+      "depends_on": [
+        24
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 27,
+      "kind": "commit",
+      "title": "Commit changes for frontend package.json",
+      "status": "pending",
+      "depends_on": [
+        25
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 28,
+      "kind": "deploy",
+      "title": "Deploy the backend to production",
+      "status": "pending",
+      "depends_on": [
+        26
+      ],
+      "result": null,
+      "error": null
+    },
+    {
+      "seq": 29,
+      "kind": "deploy",
+      "title": "Deploy the frontend to production",
+      "status": "pending",
+      "depends_on": [
+        27
       ],
       "result": null,
       "error": null

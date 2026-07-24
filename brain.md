@@ -70,3 +70,5 @@ Track project vision, architectural decisions, and current status.
 - [2026-07-24 23:00:59] 📝 **Code Applied**: Modified 1 files for Task #26
 - [2026-07-24 23:00:59] ✅ **Completed Task #26 (code)**: Fix user controller methods for fetching global restaurants and adding favorites
 - [2026-07-24 23:00:59] 🚀 **Started Task #11 (commit)**: Commit changes to version control
+- [2026-07-24 23:00:59] ✅ **Completed Task #11 (commit)**: Commit changes to version control
+- [2026-07-24 23:00:59] 🚀 **Started Task #27 (code)**: Refactor code duplication between backend and frontend

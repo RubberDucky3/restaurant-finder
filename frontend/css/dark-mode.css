@@ -1,3 +1,195 @@
 body {
-  background-color: #333;
-  color: #fff;
+    background-color: #333;
+    color: #fff;
+}
+
+.map-container {
+    background-color: #444;
+}
+
+.restaurant-card {
+    background-color: #555;
+    border-color: #666;
+}
+
+.button {
+    background-color: #777;
+    border-color: #888;
+}
+diff --git a/frontend/src/App.css b/frontend/src/App.css
+++ b/frontend/src/App.css
+@@ -1,3 +1,4 @@
+ body {
+     font-family: Arial, sans-serif;
+ }
+
+ @import './dark-mode.css';
+diff --git a/frontend/src/components/RegistrationForm.js b/frontend/src/components/RegistrationForm.js
+++ b/frontend/src/components/RegistrationForm.js
+@@ -1,6 +1,7 @@
+ import React from 'react';
+ import { Button, Form } from 'react-bootstrap';
+import './dark-mode.css';
+
+ const RegistrationForm = () => {
+     return (
+         <Form>
+             <Form.Group controlId="formBasicEmail">
+                 <Form.Label>Email address</Form.Label>
+                 <Form.Control type="email" placeholder="Enter email" />
+                 <Form.Text className="text-muted">
+                     We'll never share your email with anyone else.
+                 </Form.Text>
+             </Form.Group>
+
+             <Form.Group controlId="formBasicPassword">
+                 <Form.Label>Password</Form.Label>
+                 <Form.Control type="password" placeholder="Password" />
+             </Form.Group>
+
+             <Button variant="primary" type="submit">
+                 Submit
+             </Button>
+         </Form>
+     );
+ };
+
+ export default RegistrationForm;
+diff --git a/backend/controllers/restaurantController.js b/backend/controllers/restaurantController.js
+++ b/backend/controllers/restaurantController.js
+@@ -1,6 +1,7 @@
+ const Restaurant = require('../models/restaurant');
+const axios = require('axios');
+
+ exports.getRestaurants = async (req, res) => {
+     try {
+         const restaurants = await Restaurant.find();
+         res.json(restaurants);
+     } catch (error) {
+         res.status(500).json({ message: error.message });
+     }
+ };
+
+@@ -14,6 +15,23 @@ exports.createRestaurant = async (req, res) => {
+     try {
+         const restaurant = new Restaurant(req.body);
+         await restaurant.save();
+        const mapResponse = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${restaurant.location.lat},${restaurant.location.lng}&radius=500&type=restaurant&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+        restaurant.googlePlacesId = mapResponse.data.results[0].place_id;
+         res.status(201).json(restaurant);
+     } catch (error) {
+         res.status(400).json({ message: error.message });
+     }
+ };
+
+ exports.updateRestaurant = async (req, res) => {
+     try {
+         const updatedRestaurant = await Restaurant.findByIdAndUpdate(req.params.id, req.body, { new: true });
+         res.json(updatedRestaurant);
+     } catch (error) {
+         res.status(400).json({ message: error.message });
+     }
+ };
+
+ exports.deleteRestaurant = async (req, res) => {
+     try {
+         const deletedRestaurant = await Restaurant.findByIdAndDelete(req.params.id);
+         res.json(deletedRestaurant);
+     } catch (error) {
+         res.status(500).json({ message: error.message });
+     }
+ };
+diff --git a/backend/controllers/userController.js b/backend/controllers/userController.js
+++ b/backend/controllers/userController.js
+@@ -1,6 +1,7 @@
+ const User = require('../models/user');
+const axios = require('axios');
+
+ exports.getUsers = async (req, res) => {
+     try {
+         const users = await User.find();
+         res.json(users);
+     } catch (error) {
+         res.status(500).json({ message: error.message });
+     }
+ };
+
+@@ -14,6 +15,23 @@ exports.createUser = async (req, res) => {
+     try {
+         const user = new User(req.body);
+         await user.save();
+        const mapResponse = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${user.location.lat},${user.location.lng}&radius=500&type=restaurant&key=${process.env.GOOGLE_MAPS_API_KEY}`);
+        user.googlePlacesId = mapResponse.data.results[0].place_id;
+         res.status(201).json(user);
+     } catch (error) {
+         res.status(400).json({ message: error.message });
+     }
+ };
+
+ exports.updateUser = async (req, res) => {
+     try {
+         const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+         res.json(updatedUser);
+     } catch (error) {
+         res.status(400).json({ message: error.message });
+     }
+ };
+
+ exports.deleteUser = async (req, res) => {
+     try {
+         const deletedUser = await User.findByIdAndDelete(req.params.id);
+         res.json(deletedUser);
+     } catch (error) {
+         res.status(500).json({ message: error.message });
+     }
+ };
+diff --git a/backend/routes/restaurantRoutes.js b/backend/routes/restaurantRoutes.js
+++ b/backend/routes/restaurantRoutes.js
+@@ -1,6 +1,7 @@
+ const express = require('express');
+ const router = express.Router();
+ const restaurantController = require('../controllers/restaurantController');
+const userController = require('../controllers/userController');
+
+ // GET all restaurants
+ router.get('/', restaurantController.getRestaurants);
+
+@@ -20,3 +21,9 @@ router.put('/:id', restaurantController.updateRestaurant);
+ router.delete('/:id', restaurantController.deleteRestaurant);
+
+ module.exports = router;
+diff --git a/backend/routes/userRoutes.js b/backend/routes/userRoutes.js
+++ b/backend/routes/userRoutes.js
+@@ -1,6 +1,7 @@
+ const express = require('express');
+ const router = express.Router();
+ const userController = require('../controllers/userController');
+const restaurantController = require('../controllers/restaurantController');
+
+ // GET all users
+ router.get('/', userController.getUsers);
+
+@@ -20,3 +21,9 @@ router.put('/:id', userController.updateUser);
+ router.delete('/:id', userController.deleteUser);
+
+ module.exports = router;
+diff --git a/backend/package.json b/backend/package.json
+++ b/backend/package.json
+@@ -10,6 +10,7 @@
+     "dependencies": {
+         "express": "^4.17.1",
+         "mongoose": "^5.12.3"
+        "axios": "^0.21.1"
+     },
+     "devDependencies": {}
+ }
+diff --git a/frontend/package.json b/frontend/package.json
+++ b/frontend/package.json
+@@ -10,6 +10,7 @@
+     "dependencies": {
+         "react": "^17.0.2",
+         "react-bootstrap": "^1.5.2"
+        "axios": "^0.21.1"
+     },
+     "devDependencies": {}
+ }

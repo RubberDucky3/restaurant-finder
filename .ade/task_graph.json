@@ -288,18 +288,22 @@
       "seq": 15,
       "kind": "commit",
       "title": "Commit backend changes",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         13
       ],
-      "result": null,
+      "result": {
+        "commit_sha": "d6ea254f3237",
+        "branch": "main",
+        "message": "Commit backend changes\n\nCommit all backend code changes with a descriptive message. Push the changes to the remote repository."
+      },
       "error": null
     },
     {
       "seq": 16,
       "kind": "commit",
       "title": "Commit frontend changes",
-      "status": "queued",
+      "status": "running",
       "depends_on": [
         14
       ],

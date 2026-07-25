@@ -1,13 +1,23 @@
 --- frontend/src/App.css
 +++ frontend/src/App.css
-@@ -1,6 +1,10 @@
- .App {
+@@ -2,10 +2,10 @@
    text-align: center;
  }
  
+-.HeroSection {
 +.HeroSection {
-+  background-color: #f8f9fa;
-+  padding: 2rem;
+   background-color: #f8f9fa;
+   padding: 2rem;
+-}
 +}
  
- .Header {
+ .CuisineChip {
+   display: inline-block;
+@@ -13,6 +13,7 @@
+   margin-right: 0.5rem;
+ }
+ 
++.PriceTierFilter {
+   display: inline-block;
+   background-color: #6c757d;
+   color: white;

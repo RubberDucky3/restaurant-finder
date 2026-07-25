@@ -1,28 +1,79 @@
    text-align: center;
  }
  
+.HeroSection {
+   background-color: #f8f9fa;
+   padding: 2rem;
+}
+ 
  .CuisineChip {
    display: inline-block;
-   background-color: #007bff;
-   color: white;
-   border-radius: 0.25rem;
- }
- 
-@@ -19,6 +15,14 @@
+@@ -13,6 +13,7 @@
    margin-right: 0.5rem;
  }
  
 .PriceTierFilter {
-  display: inline-block;
-  background-color: #6c757d;
-  color: white;
-  border-radius: 0.25rem;
-}
-
- .LeafletPin {
-   background-color: #ff6f61;
-   border-radius: 50%;
-@@ -33,14 +37,6 @@
-   width: 30px;
- }
+   display: inline-block;
+   background-color: #6c757d;
+   color: white;
+diff --git a/frontend/src/App.js b/frontend/src/App.js
+index 1a2b3c4..5d6e7f8 100644
+++ b/frontend/src/App.js
+@@ -1,5 +1,6 @@
+ import React, { useEffect } from 'react';
+ import './App.css';
+import L from 'leaflet';
  
+ function App() {
+   useEffect(() => {
+diff --git a/frontend/src/components/MapComponent.js b/frontend/src/components/MapComponent.js
+new file mode 100644
+index 0000000..9a8b7c6
+++ b/frontend/src/components/MapComponent.js
+@@ -0,0 +1,25 @@
+import React from 'react';
+import L from 'leaflet';
+
+const MapComponent = ({ restaurants }) => {
+  useEffect(() => {
+    const map = L.map('map').setView([40.7450, -73.9850], 13);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+    }).addTo(map);
+
+    restaurants.forEach(restaurant => {
+      L.marker([restaurant.latitude, restaurant.longitude]).addTo(map)
+        .bindPopup(`<b>${restaurant.name}</b><br>${restaurant.address}`);
+    });
+  }, [restaurants]);
+
+  return (
+    <div id="map" style={{ height: '380px', width: '100%', borderRadius: '1rem' }}></div>
+  );
+};
+
+export default MapComponent;
+diff --git a/frontend/src/App.js b/frontend/src/App.js
+index 1a2b3c4..5d6e7f8 100644
+++ b/frontend/src/App.js
+@@ -1,5 +1,6 @@
+ import React, { useEffect } from 'react';
+ import './App.css';
+import MapComponent from './components/MapComponent';
+ 
+ function App() {
+   useEffect(() => {
+diff --git a/frontend/src/index.js b/frontend/src/index.js
+index 9a8b7c6..1a2b3c4 100644
+++ b/frontend/src/index.js
+@@ -1,5 +1,6 @@
+ import React from 'react';
+ import ReactDOM from 'react-dom/client';
+import App from './App';
+ 
+ const root = ReactDOM.createRoot(document.getElementById('root'));
+ root.render(
+   <React.StrictMode>
+     <App />
+   </React.StrictMode>
+ );

@@ -1,32 +1,46 @@
- .App {
-   text-align: center;
+ body {
+   font-family: 'Arial', sans-serif;
  }
  
+/* Hero Section */
 .HeroSection {
   background-color: #f8f9fa;
   padding: 2rem;
-}
+   text-align: center;
+ }
  
- .Header {
-   font-size: 2em;
-@@ -25,3 +29,17 @@ .RestaurantCard {
+@@ -13,10 +13,10 @@
    margin-bottom: 1rem;
  }
  
+/* Cuisine Chip */
 .CuisineChip {
   display: inline-block;
   background-color: #007bff;
   color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  margin-right: 0.5rem;
-}
-
+   padding: 0.5rem 1rem;
+   border-radius: 0.25rem;
+   margin-right: 0.5rem;
+@@ -26,10 +26,10 @@
+   margin-right: 0.5rem;
+ }
+ 
+/* Price Tier Filter */
 .PriceTierFilter {
   display: inline-block;
   background-color: #6c757d;
   color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-  margin-right: 0.5rem;
-}
+   padding: 0.5rem 1rem;
+   border-radius: 0.25rem;
+ }
+@@ -39,10 +39,10 @@
+   margin-right: 0.5rem;
+ }
+ 
+/* Leaflet Map Pin */
+.LeafletPin {
+  background-color: #ff6f61;
+  border-radius: 50%;
+  width: 30px;
+   height: 30px;
+ }

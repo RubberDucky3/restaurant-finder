@@ -54,24 +54,24 @@
     }
     
     .glass {
-      background: rgba(24, 24, 27, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(63, 63, 70, 0.4);
+      background: #18181b;
+      border: 1px solid rgba(63, 63, 70, 0.6);
+      contain: layout style;
     }
     
     .glass-card {
-      background: rgba(39, 39, 42, 0.6);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(63, 63, 70, 0.3);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      background: #27272a;
+      border: 1px solid rgba(63, 63, 70, 0.4);
+      transition: transform 0.15s ease-out, border-color 0.15s ease-out, box-shadow 0.15s ease-out;
+      will-change: transform;
+      contain: layout style;
     }
     
     .glass-card:hover {
-      background: rgba(39, 39, 42, 0.9);
-      border-color: rgba(249, 115, 22, 0.5);
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px -10px rgba(249, 115, 22, 0.15);
+      background: #27272a;
+      border-color: rgba(249, 115, 22, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -6px rgba(249, 115, 22, 0.2);
     }
     
     #map {
@@ -610,6 +610,7 @@
       applyFiltersAndSort();
     }
 
+    let searchDebounceTimer = null;
     function handleSearch(isMobile = false) {
       const query = (isMobile ? document.getElementById('mobileSearchInput').value : document.getElementById('searchInput').value).trim().toLowerCase();
       const clearBtn = document.getElementById('clearSearchBtn');
@@ -618,7 +619,10 @@
       } else {
         clearBtn.classList.add('hidden');
       }
-      applyFiltersAndSort();
+      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(() => {
+        applyFiltersAndSort();
+      }, 200);
     }
 
     function clearSearch() {

@@ -48,18 +48,27 @@
       "seq": 2,
       "kind": "code",
       "title": "Design the Hero section layout",
-      "status": "running",
+      "status": "done",
       "depends_on": [
         1
       ],
-      "result": null,
+      "result": {
+        "patch": "--- a/frontend/src/App.css\n+++ b/frontend/src/App.css\n@@ -1,6 +1,10 @@\n .App {\n   text-align: center;\n }\n \n+.HeroSection {\n+  background-color: #f8f9fa;\n+  padding: 2rem;\n+}\n \n .Header {\n   font-size: 2.5rem;\n@@ -13,6 +17,14 @@\n   margin-bottom: 2rem;\n }\n \n+.StatCard {\n+  display: inline-block;\n+  background-color: #fff;\n+  border-radius: 0.25rem;\n+  padding: 1rem;\n+  margin-right: 1rem;\n+}\n \n .RestaurantList {\n   list-style-type: none;\n@@ -20,6 +32,14 @@\n   padding: 0;\n }\n \n+.CuisineChip {\n+  display: inline-block;\n+  background-color: #007bff;\n+  color: white;\n+  border-radius: 0.25rem;\n+  padding: 0.25rem 0.5rem;\n+  margin-right: 0.5rem;\n+}\n \n .PriceTierFilter {\n   display: inline-block;\n@@ -30,6 +50,14 @@\n   border-radius: 0.25rem;\n }\n \n+.ReservationModal {\n+  background-color: #fff;\n+  border-radius: 0.25rem;\n+  padding: 2rem;\n+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);\n+}\n \n .MapContainer {\n   height: 400px;\n@@ -37,6 +65,14 @@\n   margin-top: 2rem;\n }\n \n+.LeafletPin {\n+  background-color: #ff6f61;\n+  border-radius: 50%;\n+  width: 30px;\n+  height: 30px;\n+  display: flex;\n+  align-items: center;\n+  justify-content: center;\n+}",
+        "files_changed": [
+          "frontend/src/App.css",
+          "frontend/src/App.css.orig",
+          "frontend/src/App.css.rej"
+        ],
+        "worktree": "/Users/jeromefrancis/Desktop/SoftwareProducts/restaurant-finder",
+        "attempts": 1
+      },
       "error": null
     },
     {
       "seq": 3,
       "kind": "code",
       "title": "Implement the Hero section in the frontend",
-      "status": "pending",
+      "status": "running",
       "depends_on": [
         2
       ],

@@ -1,93 +1,66 @@
-.dark-mode {
-  background-color: #333;
-  background-color: #fff;
-  color: #fff;
-}
-
-.dark-mode .header {
-  background-color: #444;
-}
-
-.dark-mode .button {
-  background-color: #555;
-  border-color: #666;
-}
-
-.dark-mode .map-container {
-  background-color: #222;
-}
-diff --git a/frontend/src/App.css.orig b/frontend/src/App.css.orig
-deleted file mode 100644
-++ /dev/null
-@@ -1,25 +0,0 @@
-diff --git a/frontend/src/App.css.rej b/frontend/src/App.css.rej
-new file mode 100644
-++ b/frontend/src/App.css.rej
-@@ -0,0 +1 @@
-<<<<<<< .mine
-.dark-mode {
-  background-color: #333;
-  color: #fff;
-}
-
-.dark-mode .header {
-  background-color: #444;
-}
-
-.dark-mode .button {
-  background-color: #555;
-  border-color: #666;
-}
-
-.dark-mode .map-container {
-  background-color: #222;
-}
-=======
->>>>>>> .theirs
-diff --git a/frontend/src/App.js b/frontend/src/App.js
-++ b/frontend/src/App.js
-@@ -1,5 +1,6 @@
- import React from 'react';
- import './App.css';
-import { useDarkMode } from './hooks/useDarkMode';
+ .App {
+   text-align: center;
+ }
  
- function App() {
-   return (
-     <div className="App">
-@@ -7,6 +8,9 @@
-       <header className="App-header">
-         Restaurant Finder
-       </header>
-      <button onClick={useDarkMode}>Toggle Dark Mode</button>
-       <main className="App-main">
-         {/* Main content goes here */}
-       </main>
-diff --git a/frontend/src/hooks/useDarkMode.js b/frontend/src/hooks/useDarkMode.js
-new file mode 100644
-++ b/frontend/src/hooks/useDarkMode.js
-@@ -0,0 +1,23 @@
-import { useState } from 'react';
-
-const useDarkMode = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-    document.body.classList.toggle('dark-mode', isDarkMode);
-  };
-
-  return toggleDarkMode;
-};
-
-export default useDarkMode;
-diff --git a/frontend/src/hooks/useDarkMode.js.orig b/frontend/src/hooks/useDarkMode.js.orig
-deleted file mode 100644
-++ /dev/null
-@@ -1,23 +0,0 @@
-diff --git a/frontend/src/hooks/useDarkMode.js.rej b/frontend/src/hooks/useDarkMode.js.rej
-new file mode 100644
-++ b/frontend/src/hooks/useDarkMode.js.rej
-@@ -0,0 +1 @@
-<<<<<<< .mine
-=======
->>>>>>> .theirs
+.HeroSection {
+  background-color: #f8f9fa;
+  padding: 2rem;
+}
+ 
+ .Header {
+   font-size: 2.5rem;
+@@ -13,6 +17,14 @@
+   margin-bottom: 2rem;
+ }
+ 
+.StatCard {
+  display: inline-block;
+  background-color: #fff;
+  border-radius: 0.25rem;
+  padding: 1rem;
+  margin-right: 1rem;
+}
+ 
+ .RestaurantList {
+   list-style-type: none;
+@@ -20,6 +32,14 @@
+   padding: 0;
+ }
+ 
+.CuisineChip {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  margin-right: 0.5rem;
+}
+ 
+ .PriceTierFilter {
+   display: inline-block;
+@@ -30,6 +50,14 @@
+   border-radius: 0.25rem;
+ }
+ 
+.ReservationModal {
+  background-color: #fff;
+  border-radius: 0.25rem;
+  padding: 2rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+ 
+ .MapContainer {
+   height: 400px;
+@@ -37,6 +65,14 @@
+   margin-top: 2rem;
+ }
+ 
+.LeafletPin {
+  background-color: #ff6f61;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

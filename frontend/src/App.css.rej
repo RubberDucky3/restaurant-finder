@@ -1,0 +1,13 @@
+--- frontend/src/App.css
++++ frontend/src/App.css
+@@ -1,6 +1,10 @@
+ .App {
+   text-align: center;
+ }
+ 
++.HeroSection {
++  background-color: #f8f9fa;
++  padding: 2rem;
++}
+ 
+ .Header {
